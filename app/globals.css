@@ -1,0 +1,374 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-geist-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-geist-mono: 'Geist Mono', ui-monospace, monospace;
+
+  /* Premium Immersive Fenris Theme — Dark, Wolf, Gaming Hall */
+  --bg: #05070f;
+  --bg-elevated: #0a0d18;
+  --surface: #0f1320;
+  --surface-2: #151b2a;
+  --card: #11151f;
+  --card-hover: #1a202f;
+
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --text-subtle: #475569;
+
+  --accent: #c5a46e;        /* Rich antique gold / bronze */
+  --accent-hover: #d4b47e;
+  --accent-red: #9f1239;   /* Blood crimson for Warhammer */
+  --accent-ice: #67e8f9;   /* Fenris ice blue */
+
+  --border: #1f2535;
+  --border-subtle: #1a1f2e;
+
+  --success: #22c55e;
+  --glow: rgba(197, 164, 110, 0.15);
+}
+
+body {
+  font-family: var(--font-geist-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "tnum";
+}
+
+/* Premium Typography — Fenris Brand (Stronger, more atmospheric) */
+h1, h2, h3, h4 {
+  font-feature-settings: "tnum" "ss01", "kern";
+  font-weight: 700;
+}
+
+h1 {
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  font-weight: 900;
+}
+
+h2 {
+  letter-spacing: -0.05em;
+  font-weight: 800;
+}
+
+h3 {
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.text-premium {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+/* Better overall vertical rhythm for premium feel */
+section, .section {
+  padding-top: 4.75rem;
+  padding-bottom: 4.75rem;
+}
+
+@media (min-width: 768px) {
+  section, .section {
+    padding-top: 5.75rem;
+    padding-bottom: 5.75rem;
+  }
+}
+
+/* Immersive Card System */
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.12);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-7px);
+  box-shadow: 0 30px 60px -15px rgb(0 0 0 / 0.45),
+              0 12px 24px -8px rgb(0 0 0 / 0.25),
+              0 0 0 1px var(--glow);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Stronger Event Badges — Gaming Category Colors */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-[10px] font-semibold tracking-[0.5px] border;
+}
+
+.badge-mtg { 
+  background: #3b0764; 
+  color: #e0bbff; 
+  border-color: #581c87;
+}
+.badge-warhammer { 
+  background: #450a0a; 
+  color: #fecaca; 
+  border-color: #7f1d1d;
+}
+.badge-pokemon { 
+  background: #1e3a8a; 
+  color: #bae6fd; 
+  border-color: #1e40af;
+}
+.badge-open { 
+  background: #14532d; 
+  color: #bbf7d0; 
+  border-color: #166534;
+}
+.badge-other { 
+  background: #1e2937; 
+  color: #cbd5e1; 
+  border-color: #334155;
+}
+
+/* New game system badges */
+.badge-onepiece {
+  background: #1e3a8a;
+  color: #bae6fd;
+  border-color: #1e40af;
+}
+.badge-gundam {
+  background: #3f2a1f;
+  color: #fed7aa;
+  border-color: #78350f;
+}
+.badge-boltaction {
+  background: #1f2937;
+  color: #d1d5db;
+  border-color: #4b5563;
+}
+.badge-starwars {
+  background: #312e81;
+  color: #c7d2fe;
+  border-color: #4338ca;
+}
+
+/* Premium Inputs */
+.input {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  font-size: 0.95rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(197, 164, 110, 0.08);
+  background-color: var(--surface-2);
+}
+
+/* Modal — More Dramatic */
+.modal {
+  animation: modalEnter 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Calendar */
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 1px solid transparent;
+}
+
+.calendar-day.has-event {
+  background-color: rgba(197, 164, 110, 0.12);
+  color: var(--accent);
+  font-weight: 600;
+  border-radius: 9999px;
+  border-color: var(--accent);
+}
+
+.calendar-day.today {
+  background-color: var(--accent);
+  color: #05070f;
+  font-weight: 700;
+  border-radius: 9999px;
+}
+
+/* Navbar Premium Glass */
+.nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  transition: width 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+/* Powerful Dramatic Hero — Real Fenris Gaming Hall */
+.hero {
+  position: relative;
+}
+
+/* The main dark overlay is now handled in JSX for precision (65-75% black gradient) */
+
+/* Hero image positioning - balanced for the new dramatic treatment */
+.hero-image {
+  object-position: 52% 42%;
+}
+
+@media (min-width: 768px) {
+  .hero-image {
+    object-position: 55% 38%;
+  }
+}
+
+/* Subtle immersive texture on surfaces */
+.surface {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Improved Buttons */
+/* Unified Primary Button - Gold solid, bold, consistent everywhere */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all active:scale-[0.985] text-center;
+  background: #c5a46e;
+  color: #05070f;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.btn-primary:hover {
+  background: #d4b47e;
+  box-shadow: 0 10px 20px -5px rgba(197, 164, 110, 0.4);
+}
+
+/* Unified Secondary Button */
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all active:scale-[0.985] border text-center;
+  border-color: #c5a46e;
+  color: white;
+  font-weight: 700;
+}
+
+.btn-secondary:hover {
+  background: #c5a46e;
+  color: #05070f;
+  border-color: #c5a46e;
+}
+
+/* Discord button - now matches the primary system but with cyan accent for brand */
+.btn-discord {
+  @apply inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all active:scale-[0.985] border text-center;
+  border-color: #67e8f9;
+  color: #67e8f9;
+  font-weight: 700;
+}
+
+.btn-discord:hover {
+  background: #67e8f9;
+  color: #05070f;
+  border-color: #67e8f9;
+}
+
+/* Scroll fade utility for sections */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Premium spacing rhythm — cleaner & more generous */
+.section {
+  padding-top: 6.5rem;
+  padding-bottom: 6.5rem;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-top: 8.5rem;
+    padding-bottom: 8.5rem;
+  }
+}
+
+/* Premium Typography Helpers */
+h1, h2, h3 {
+  font-feature-settings: "tnum", "ss01", "kern";
+}
+
+h1 {
+  letter-spacing: -0.032em;
+}
+
+h2 {
+  letter-spacing: -0.028em;
+}
+
+.text-premium {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+  .hours-table td, .hours-table th {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Subtle wolf / gaming accent line */
+.accent-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+}

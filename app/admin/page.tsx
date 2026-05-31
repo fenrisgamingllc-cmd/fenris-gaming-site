@@ -458,7 +458,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="pt-4 text-xs text-[#64748b]">
-                Note: The top badge ("HAGERSTOWN, MARYLAND • EST. 2022") and game systems line are currently static.
+                Note: The top badge (&quot;HAGERSTOWN, MARYLAND • EST. 2022&quot;) and game systems line are currently static.
               </div>
             </div>
           </div>
@@ -858,7 +858,7 @@ export default function AdminDashboard() {
             </div>
 
             <p className="mt-8 text-xs text-[#64748b]">
-              These events power the "This Week at the Hall" section on the homepage. The full public calendar is still on the old system (sync coming soon).
+              These events power the &quot;This Week at the Hall&quot; section on the homepage. The full public calendar is still on the old system (sync coming soon).
             </p>
           </div>
         )}

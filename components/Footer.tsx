@@ -1,11 +1,23 @@
+'use client';
+
 import Link from 'next/link';
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react';
+import { useSiteContent } from '@/lib/content';
 
 export default function Footer() {
-  const quickHours = [
-    { day: 'Mon–Fri', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Sat–Sun', hours: '10:00 AM – 9:00 PM' },
-  ];
+  const { content: siteContent } = useSiteContent();
+
+  const quickHours = siteContent.storeInfo.hours.length > 0 
+    ? [
+        { day: 'Mon–Fri', hours: siteContent.storeInfo.hours[0].hours },
+        { day: 'Sat–Sun', hours: siteContent.storeInfo.hours[5].hours },
+      ]
+    : [
+        { day: 'Mon–Fri', hours: '12:00 PM – 9:00 PM' },
+        { day: 'Sat–Sun', hours: '10:00 AM – 9:00 PM' },
+      ];
+
+  const { footer } = siteContent;
 
   return (
     <footer className="bg-[#0a0f1a] border-t border-[#374151] text-sm">
@@ -75,12 +87,12 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-[#374151] flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#6b7280]">
-          <div>© {new Date().getFullYear()} Fenris Gaming LLC. All rights reserved.</div>
+          <div>{footer.copyrightText.replace('{year}', new Date().getFullYear().toString())}</div>
 
           {/* Social Media Icons */}
           <div className="flex items-center gap-4">
             <a
-              href="https://www.instagram.com/fenris_gaming_llc"
+              href={footer.socialLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -89,7 +101,7 @@ export default function Footer() {
               <Instagram size={18} />
             </a>
             <a
-              href="https://www.facebook.com/fenrisgamingllc"
+              href={footer.socialLinks.facebook}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -106,7 +118,7 @@ export default function Footer() {
             <a href="/getting-started" className="hover:text-[#9ca3af]">
               Getting Started
             </a>
-            <a href="https://discord.gg/AGnfaCStVA" target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
+            <a href={footer.socialLinks.discord} target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
               Join the Discord
             </a>
             <span className="hidden md:inline text-[#374151]">•</span>

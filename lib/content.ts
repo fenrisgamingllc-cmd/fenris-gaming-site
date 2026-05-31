@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 
 export interface HeroButton {
@@ -24,6 +26,38 @@ export interface ManagedEvent {
   price?: string;
 }
 
+export interface GettingStartedItem {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  icon?: string; // emoji or simple identifier for now
+}
+
+export interface StoreInfo {
+  hours: Array<{ day: string; hours: string }>;
+  phone: string;
+  email: string;
+  address: {
+    street: string;
+    cityStateZip: string;
+  };
+}
+
+export interface FooterInfo {
+  copyrightText: string;
+  socialLinks: {
+    instagram: string;
+    facebook: string;
+    discord: string;
+  };
+}
+
+export interface AboutInfo {
+  introText: string;
+  grandOpeningText: string;
+}
+
 // Core hero buttons that must always exist in this order
 export const CORE_HERO_BUTTON_IDS = ['btn-1', 'btn-2', 'btn-3', 'btn-4'];
 
@@ -36,6 +70,10 @@ export interface SiteContent {
   heroButtons: HeroButton[];
   announcements: Announcement[];
   events: ManagedEvent[];
+  gettingStarted: GettingStartedItem[];
+  storeInfo: StoreInfo;
+  footer: FooterInfo;
+  about: AboutInfo;
   homepageGallery: Record<string, string[]>;
 }
 
@@ -77,6 +115,86 @@ const DEFAULT_CONTENT: SiteContent = {
     },
   ],
   announcements: [],
+  gettingStarted: [
+    {
+      id: "gs-1",
+      title: "Warhammer 40k, Age of Sigmar & Horus Heresy",
+      description: "Our core miniature wargaming communities.",
+      content: "We run events and have strong communities for Warhammer 40,000, Age of Sigmar, and Horus Heresy. Whether you play large battles, narrative campaigns, or smaller games, we have tables and terrain ready. Open play is always free — just show up with your army.",
+      icon: "⚔️",
+    },
+    {
+      id: "gs-2",
+      title: "Magic: The Gathering",
+      description: "The world’s most popular trading card game.",
+      content: "Magic is a strategy card game where players build decks and battle using creatures, spells, and clever tactics. The most popular casual format is Commander (EDH). We run weekly Friday Night Magic and have a very welcoming Commander community. You can start with a preconstructed deck and upgrade over time.",
+      icon: "🃏",
+    },
+    {
+      id: "gs-3",
+      title: "Pokémon, One Piece & Gundam TCG",
+      description: "Popular and growing trading card games.",
+      content: "We support Pokémon TCG (sold at MSRP), One Piece TCG, and Gundam Card Game. Regular events and leagues for all three. Great for both competitive players and collectors. New players are always welcome.",
+      icon: "🎴",
+    },
+    {
+      id: "gs-4",
+      title: "Bolt Action & Star Wars Miniatures",
+      description: "Historical and licensed miniature games.",
+      content: "We carry and run events for Bolt Action (WWII) and Star Wars Unlimited. These are excellent for players who enjoy historical or themed skirmish and larger games. Open play and dedicated nights available.",
+      icon: "🎯",
+    },
+    {
+      id: "gs-5",
+      title: "Dungeons & Dragons & RPGs",
+      description: "Collaborative storytelling and adventure.",
+      content: "D&D is our most popular RPG, with multiple nights per week including beginner-friendly tables. We also support other systems. Many people find their regular group just by showing up and playing with different people until they click.",
+      icon: "🐉",
+    },
+    {
+      id: "gs-6",
+      title: "Board Games",
+      description: "Casual and strategy board games for everyone.",
+      content: "We have a selection of board games available, with a focus on games that crossover with miniature and card gaming. While our in-store board game selection is limited, you're welcome to bring your own games to play in our open gaming space. We can also special order titles for you.",
+      icon: "🎲",
+    },
+    {
+      id: "gs-7",
+      title: "Used Models & Trading Cards",
+      description: "Great deals and affordable entry points.",
+      content: "We actively buy and sell used models and trading cards at good discounts. This makes getting into the hobby much more affordable for new players and gives experienced players excellent deals on expanding their collections. Ask us about current used inventory when you visit.",
+      icon: "💰",
+    },
+  ],
+  storeInfo: {
+    hours: [
+      { day: 'Monday', hours: '12:00 PM – 9:00 PM' },
+      { day: 'Tuesday', hours: '12:00 PM – 9:00 PM' },
+      { day: 'Wednesday', hours: '12:00 PM – 9:00 PM' },
+      { day: 'Thursday', hours: '12:00 PM – 9:00 PM' },
+      { day: 'Friday', hours: '12:00 PM – 9:00 PM' },
+      { day: 'Saturday', hours: '10:00 AM – 9:00 PM' },
+      { day: 'Sunday', hours: '10:00 AM – 9:00 PM' },
+    ],
+    phone: '(240) 217-2784',
+    email: 'fenrisgamingllc@gmail.com',
+    address: {
+      street: '11375 Robinwood Drive',
+      cityStateZip: 'College Plaza, Hagerstown, MD 21742',
+    },
+  },
+  footer: {
+    copyrightText: '© {year} Fenris Gaming LLC. All rights reserved.',
+    socialLinks: {
+      instagram: 'https://www.instagram.com/fenris_gaming_llc',
+      facebook: 'https://www.facebook.com/fenrisgamingllc',
+      discord: 'https://discord.gg/AGnfaCStVA',
+    },
+  },
+  about: {
+    introText: 'What began as a small group of friends in a living room has become Western Maryland’s premier tabletop gaming destination.',
+    grandOpeningText: 'On Halloween 2025 we cut the ribbon at 11375 Robinwood Drive. Surrounded by family, friends, and the entire local gaming community, we officially opened the space we had dreamed of for over a decade. The hall was designed by gamers, for gamers — with room for large Warhammer tables, comfortable seating, and a true “third space” feel for players of 40k, Horus Heresy, MTG, Pokémon, One Piece, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more.',
+  },
   events: [
     // Sunday
     { id: 'evt-1', title: "Commander & Coffee (Magic)", isRecurring: true, dayOfWeek: 0, time: "10:00 AM", description: "Casual Magic Commander with coffee. New players welcome!" },
@@ -178,6 +296,10 @@ export function loadContent(): SiteContent {
       })(),
       announcements: parsed.announcements ?? [],
       events: parsed.events?.length ? parsed.events : getDefaultContent().events,
+      gettingStarted: parsed.gettingStarted?.length ? parsed.gettingStarted : getDefaultContent().gettingStarted,
+      storeInfo: parsed.storeInfo || getDefaultContent().storeInfo,
+      footer: parsed.footer || getDefaultContent().footer,
+      about: parsed.about || getDefaultContent().about,
       homepageGallery: parsed.homepageGallery ?? getDefaultContent().homepageGallery,
     };
   } catch {

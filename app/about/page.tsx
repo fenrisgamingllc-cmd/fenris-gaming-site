@@ -1,4 +1,5 @@
 import { Users, Award, Heart } from 'lucide-react';
+import { AboutHeroText, AboutGrandOpeningText } from './AboutDynamicContent';
 
 export default function AboutPage() {
   const owners = [
@@ -30,9 +31,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-5">
           <div className="uppercase text-xs tracking-[3px] text-[#c5a46e] font-semibold mb-3">OUR STORY</div>
           <h1 className="text-6xl font-semibold tracking-[-3px] mb-5">Twelve years<br />in the making.</h1>
-          <p className="max-w-xl text-xl text-[#94a3b8]">
-            What began as a small group of friends in a living room has become Western Maryland’s premier tabletop gaming destination.
-          </p>
+          <AboutHeroText />
         </div>
       </div>
 
@@ -55,9 +54,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <p className="text-[#94a3b8] max-w-3xl">
-            On Halloween 2025 we cut the ribbon at 11375 Robinwood Drive. Surrounded by family, friends, and the entire local gaming community, we officially opened the space we had dreamed of for over a decade. The hall was designed by gamers, for gamers — with room for large Warhammer tables, comfortable seating, and a true “third space” feel for players of 40k, Horus Heresy, MTG, Pokémon, One Piece, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more.
-          </p>
+          <AboutGrandOpeningText />
         </div>
 
         {/* Values */}

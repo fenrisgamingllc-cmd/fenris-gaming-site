@@ -33,12 +33,12 @@ export default function EventsPage() {
           </p>
           <p className="mt-1 text-sm text-[#c5a46e]">
             <a 
-              href="https://www.facebook.com/photo/?fbid=963670186435987&set=a.123901053746242" 
+              href="https://www.facebook.com/fenrisgamingllc/events" 
               target="_blank" 
               rel="noopener noreferrer"
               className="underline hover:text-white"
             >
-              View the current month’s full calendar on Facebook →
+              View Full Calendar on Facebook
             </a>
           </p>
         </div>

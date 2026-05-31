@@ -1,47 +1,7 @@
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Getting Started at Fenris | New Player Guide',
-  description: 'New to tabletop gaming? Accurate guide to Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, Star Wars Unlimited, used models & cards at great prices, and more at Fenris Gaming Hall.',
-};
-
-const gettingStartedContent = [
-  {
-    title: "Warhammer 40k, Age of Sigmar & Horus Heresy",
-    description: "Our core miniature wargaming communities.",
-    content: "We run events and have strong communities for Warhammer 40,000, Age of Sigmar, and Horus Heresy. Whether you play large battles, narrative campaigns, or smaller games, we have tables and terrain ready. Open play is always free — just show up with your army.",
-  },
-  {
-    title: "Magic: The Gathering",
-    description: "The world’s most popular trading card game.",
-    content: "Magic is a strategy card game where players build decks and battle using creatures, spells, and clever tactics. The most popular casual format is Commander (EDH). We run weekly Friday Night Magic and have a very welcoming Commander community. You can start with a preconstructed deck and upgrade over time.",
-  },
-  {
-    title: "Pokémon, One Piece & Gundam TCG",
-    description: "Popular and growing trading card games.",
-    content: "We support Pokémon TCG (sold at MSRP), One Piece TCG, and Gundam Card Game. Regular events and leagues for all three. Great for both competitive players and collectors. New players are always welcome.",
-  },
-  {
-    title: "Bolt Action & Star Wars Miniatures",
-    description: "Historical and licensed miniature games.",
-    content: "We carry and run events for Bolt Action (WWII) and Star Wars Unlimited. These are excellent for players who enjoy historical or themed skirmish and larger games. Open play and dedicated nights available.",
-  },
-  {
-    title: "Dungeons & Dragons & RPGs",
-    description: "Collaborative storytelling and adventure.",
-    content: "D&D is our most popular RPG, with multiple nights per week including beginner-friendly tables. We also support other systems. Many people find their regular group just by showing up and playing with different people until they click.",
-  },
-  {
-    title: "Board Games",
-    description: "Casual and strategy board games for everyone.",
-    content: "We have a large and growing selection of board games. Open play nights are perfect for trying new games or finding people who already play what you like. No experience needed — just ask and someone will teach you.",
-  },
-  {
-    title: "Used Models & Trading Cards",
-    description: "Great deals and affordable entry points.",
-    content: "We actively buy and sell used models and trading cards at good discounts. This makes getting into the hobby much more affordable for new players and gives experienced players excellent deals on expanding their collections. Ask us about current used inventory when you visit.",
-  },
-];
+import { useSiteContent } from '@/lib/content';
+import Link from 'next/link';
 
 const faqs = [
   {
@@ -91,6 +51,8 @@ const faqs = [
 ];
 
 export default function GettingStartedPage() {
+  const { content: siteContent } = useSiteContent();
+
   return (
     <div className="max-w-5xl mx-auto px-5 py-16">
       {/* Hero */}
@@ -130,11 +92,14 @@ export default function GettingStartedPage() {
         </div>
       </div>
 
-      {/* Game Guides */}
+      {/* Game Guides - driven by Admin Dashboard */}
       <div className="space-y-16 mb-20">
-        {gettingStartedContent.map((section, index) => (
-          <div key={index}>
-            <h2 className="text-3xl font-semibold tracking-tight mb-4">{section.title}</h2>
+        {siteContent.gettingStarted.map((section) => (
+          <div key={section.id}>
+            <h2 className="text-3xl font-semibold tracking-tight mb-4 flex items-center gap-3">
+              {section.icon && <span>{section.icon}</span>}
+              {section.title}
+            </h2>
             <p className="text-[#c5a46e] mb-3">{section.description}</p>
             <p className="text-[#cbd5e1] leading-relaxed max-w-3xl">{section.content}</p>
           </div>

@@ -3,8 +3,11 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
+import { useSiteContent } from '@/lib/content';
 
 export default function ContactPage() {
+  const { content: siteContent } = useSiteContent();
+
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,15 +45,7 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const fullHours = [
-    { day: 'Monday', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Tuesday', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Wednesday', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Thursday', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Friday', hours: '12:00 PM – 9:00 PM' },
-    { day: 'Saturday', hours: '10:00 AM – 9:00 PM' },
-    { day: 'Sunday', hours: '10:00 AM – 9:00 PM' },
-  ];
+  const { hours, phone, email } = siteContent.storeInfo;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
@@ -65,10 +60,10 @@ export default function ContactPage() {
         <div className="lg:col-span-2 space-y-9">
           <div>
             <div className="uppercase text-xs text-[#6b7280] tracking-widest mb-3">STORE LOCATION</div>
-            <div className="font-medium text-lg">11375 Robinwood Drive</div>
-            <div className="text-[#9ca3af]">College Plaza, Hagerstown, MD 21742</div>
+            <div className="font-medium text-lg">{siteContent.storeInfo.address.street}</div>
+            <div className="text-[#9ca3af]">{siteContent.storeInfo.address.cityStateZip}</div>
 
-            <a href="https://maps.google.com/?q=11375+Robinwood+Drive,+Hagerstown,+MD+21742" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-[#c5a46e] mt-2 hover:underline">
+            <a href={`https://maps.google.com/?q=${encodeURIComponent(siteContent.storeInfo.address.street + ', ' + siteContent.storeInfo.address.cityStateZip)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-[#c5a46e] mt-2 hover:underline">
               Get directions on Google Maps <ExternalLink size={14} />
             </a>
           </div>
@@ -76,8 +71,8 @@ export default function ContactPage() {
           <div>
             <div className="uppercase text-xs text-[#6b7280] tracking-widest mb-3">CONTACT</div>
             <div className="space-y-2 text-sm">
-              <a href="tel:+12402172784" className="flex items-center gap-2 hover:text-[#c5a46e]"><Phone size={15} /> (240) 217-2784</a>
-              <a href="mailto:fenrisgamingllc@gmail.com" className="flex items-center gap-2 hover:text-[#c5a46e]"><Mail size={15} /> fenrisgamingllc@gmail.com</a>
+              <a href={`tel:${phone.replace(/\D/g, '')}`} className="flex items-center gap-2 hover:text-[#c5a46e]"><Phone size={15} /> {phone}</a>
+              <a href={`mailto:${email}`} className="flex items-center gap-2 hover:text-[#c5a46e]"><Mail size={15} /> {email}</a>
               <a href="https://discord.gg/AGnfaCStVA" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#c5a46e]">Discord: discord.gg/AGnfaCStVA</a>
             </div>
           </div>
@@ -87,7 +82,7 @@ export default function ContactPage() {
             <div className="uppercase text-xs text-[#6b7280] tracking-widest mb-3 flex items-center gap-2"><Clock size={14} /> STORE HOURS</div>
             <table className="hours-table w-full text-sm">
               <tbody>
-                {fullHours.map((row, idx) => (
+                {hours.map((row, idx) => (
                   <tr key={idx} className="border-b border-[#1f2937] last:border-none">
                     <td className="py-1.5 pr-3 text-[#9ca3af]">{row.day}</td>
                     <td className="py-1.5 font-medium text-right">{row.hours}</td>

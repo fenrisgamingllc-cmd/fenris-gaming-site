@@ -20,7 +20,7 @@ export default function AdminDashboard() {
   const [loginUsername, setLoginUsername] = useState('admin');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [activeSection, setActiveSection] = useState<'hero' | 'trust' | 'buttons' | 'announcements' | 'events' | 'gallery' | 'settings'>('hero');
+  const [activeSection, setActiveSection] = useState<'hero' | 'trust' | 'buttons' | 'announcements' | 'events' | 'getting-started' | 'store-info' | 'footer' | 'about' | 'gallery' | 'settings'>('hero');
 
   // Local state for Announcements creation form
   const [newAnnouncementText, setNewAnnouncementText] = useState('');
@@ -235,6 +235,85 @@ export default function AdminDashboard() {
     toast.success('Event deleted');
   };
 
+  // === GETTING STARTED ===
+  const addGettingStartedItem = () => {
+    const newItem: import('@/lib/content').GettingStartedItem = {
+      id: generateId(),
+      title: 'New Game System',
+      description: 'Short description here.',
+      content: 'Longer explanation text goes here...',
+      icon: '🎮',
+    };
+    updateContent((prev) => ({
+      ...prev,
+      gettingStarted: [...prev.gettingStarted, newItem],
+    }));
+    toast.success('New system added');
+  };
+
+  const updateGettingStartedItem = (id: string, field: keyof import('@/lib/content').GettingStartedItem, value: string) => {
+    updateContent((prev) => ({
+      ...prev,
+      gettingStarted: prev.gettingStarted.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item
+      ),
+    }));
+  };
+
+  const deleteGettingStartedItem = (id: string) => {
+    if (!confirm('Delete this game system?')) return;
+    updateContent((prev) => ({
+      ...prev,
+      gettingStarted: prev.gettingStarted.filter((item) => item.id !== id),
+    }));
+    toast.success('System deleted');
+  };
+
+  const moveGettingStartedItem = (id: string, direction: -1 | 1) => {
+    updateContent((prev) => {
+      const items = [...prev.gettingStarted];
+      const index = items.findIndex((i) => i.id === id);
+      if (index === -1) return prev;
+
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= items.length) return prev;
+
+      [items[index], items[newIndex]] = [items[newIndex], items[index]];
+
+      return { ...prev, gettingStarted: items };
+    });
+  };
+
+  const updateStoreInfo = (field: keyof import('@/lib/content').StoreInfo, value: any) => {
+    updateContent((prev) => ({
+      ...prev,
+      storeInfo: {
+        ...prev.storeInfo,
+        [field]: value,
+      },
+    }));
+  };
+
+  const updateFooter = (field: keyof import('@/lib/content').FooterInfo, value: any) => {
+    updateContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        [field]: value,
+      },
+    }));
+  };
+
+  const updateAbout = (field: keyof import('@/lib/content').AboutInfo, value: string) => {
+    updateContent((prev) => ({
+      ...prev,
+      about: {
+        ...prev.about,
+        [field]: value,
+      },
+    }));
+  };
+
   // === GALLERY ===
   const categories = Object.keys(content.homepageGallery);
 
@@ -408,6 +487,10 @@ export default function AdminDashboard() {
               { id: 'buttons', label: 'Hero Buttons' },
               { id: 'announcements', label: 'Announcements' },
               { id: 'events', label: 'Events' },
+              { id: 'getting-started', label: 'Getting Started' },
+              { id: 'store-info', label: 'Store Info' },
+              { id: 'footer', label: 'Footer' },
+              { id: 'about', label: 'About' },
               { id: 'gallery', label: 'Gallery' },
               { id: 'settings', label: 'Settings' },
             ].map((tab) => (
@@ -860,6 +943,275 @@ export default function AdminDashboard() {
             <p className="mt-8 text-xs text-[#64748b]">
               These events power the &quot;This Week at the Hall&quot; section on the homepage. The full public calendar is still on the old system (sync coming soon).
             </p>
+          </div>
+        )}
+
+        {/* GETTING STARTED - New Admin Tab */}
+        {activeSection === 'getting-started' && (
+          <div>
+            <div className="mb-8 flex items-center justify-between">
+              <div>
+                <h2 className="text-3xl font-semibold tracking-tighter">Getting Started</h2>
+                <p className="text-[#94a3b8] mt-1">Manage the game system guides shown on the /getting-started page.</p>
+              </div>
+              <button onClick={addGettingStartedItem} className="btn-primary flex items-center gap-2 px-5 h-10 text-sm">
+                <Plus size={16} /> Add New System
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {content.gettingStarted.length === 0 ? (
+                <div className="border border-dashed border-[#1f2535] rounded-3xl p-10 text-center">
+                  <p className="text-[#94a3b8]">No game systems yet.</p>
+                </div>
+              ) : (
+                content.gettingStarted.map((item, idx) => (
+                  <div key={item.id} className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="text-2xl">{item.icon || '🎮'}</div>
+                        <div>
+                          <div className="text-xs text-[#64748b]">SYSTEM {idx + 1}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => moveGettingStartedItem(item.id, -1)}
+                          disabled={idx === 0}
+                          className="p-1 text-[#94a3b8] hover:text-white disabled:opacity-30"
+                        >
+                          <ArrowUp size={16} />
+                        </button>
+                        <button
+                          onClick={() => moveGettingStartedItem(item.id, 1)}
+                          disabled={idx === content.gettingStarted.length - 1}
+                          className="p-1 text-[#94a3b8] hover:text-white disabled:opacity-30"
+                        >
+                          <ArrowDown size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteGettingStartedItem(item.id)}
+                          className="text-[#f87171] hover:text-red-400 p-2 ml-2"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs text-[#94a3b8] block mb-1.5">Title</label>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => updateGettingStartedItem(item.id, 'title', e.target.value)}
+                          className="input w-full"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-[#94a3b8] block mb-1.5">Icon (emoji)</label>
+                        <input
+                          type="text"
+                          value={item.icon || ''}
+                          onChange={(e) => updateGettingStartedItem(item.id, 'icon', e.target.value)}
+                          className="input w-full"
+                          placeholder="⚔️"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="text-xs text-[#94a3b8] block mb-1.5">Short Description</label>
+                        <input
+                          type="text"
+                          value={item.description}
+                          onChange={(e) => updateGettingStartedItem(item.id, 'description', e.target.value)}
+                          className="input w-full"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="text-xs text-[#94a3b8] block mb-1.5">Full Content / Guide</label>
+                        <textarea
+                          value={item.content}
+                          onChange={(e) => updateGettingStartedItem(item.id, 'content', e.target.value)}
+                          className="input w-full min-h-[120px]"
+                          rows={5}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* STORE INFO / CONTACT */}
+        {activeSection === 'store-info' && (
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tighter">Store Info</h2>
+              <p className="text-[#94a3b8] mt-1">Basic contact and hours information shown on the Contact page.</p>
+            </div>
+
+            <div className="max-w-2xl space-y-8">
+              {/* Contact Details */}
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-4 text-[#c5a46e]">Contact Details</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Phone Number</label>
+                    <input
+                      type="text"
+                      value={content.storeInfo.phone}
+                      onChange={(e) => updateStoreInfo('phone', e.target.value)}
+                      className="input w-full"
+                      placeholder="(240) 217-2784"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Email Address</label>
+                    <input
+                      type="email"
+                      value={content.storeInfo.email}
+                      onChange={(e) => updateStoreInfo('email', e.target.value)}
+                      className="input w-full"
+                      placeholder="fenrisgamingllc@gmail.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Street Address</label>
+                    <input
+                      type="text"
+                      value={content.storeInfo.address.street}
+                      onChange={(e) => updateStoreInfo('address', { ...content.storeInfo.address, street: e.target.value })}
+                      className="input w-full"
+                      placeholder="11375 Robinwood Drive"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">City, State, ZIP</label>
+                    <input
+                      type="text"
+                      value={content.storeInfo.address.cityStateZip}
+                      onChange={(e) => updateStoreInfo('address', { ...content.storeInfo.address, cityStateZip: e.target.value })}
+                      className="input w-full"
+                      placeholder="College Plaza, Hagerstown, MD 21742"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Hours */}
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-4 text-[#c5a46e]">Store Hours</h3>
+                <div className="space-y-3">
+                  {content.storeInfo.hours.map((row, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="w-28 text-sm text-[#e2e8f0] font-medium">{row.day}</div>
+                      <input
+                        type="text"
+                        value={row.hours}
+                        onChange={(e) => {
+                          const newHours = [...content.storeInfo.hours];
+                          newHours[index] = { ...newHours[index], hours: e.target.value };
+                          updateStoreInfo('hours', newHours);
+                        }}
+                        className="input flex-1"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-[#64748b] mt-4">Changes here will appear on the Contact page.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* FOOTER */}
+        {activeSection === 'footer' && (
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tighter">Footer</h2>
+              <p className="text-[#94a3b8] mt-1">Control the footer content and social links.</p>
+            </div>
+
+            <div className="max-w-2xl space-y-6">
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-4 text-[#c5a46e]">Copyright</h3>
+                <input
+                  type="text"
+                  value={content.footer.copyrightText}
+                  onChange={(e) => updateFooter('copyrightText', e.target.value)}
+                  className="input w-full"
+                  placeholder="© {year} Fenris Gaming LLC. All rights reserved."
+                />
+                <p className="text-xs text-[#64748b] mt-2">Use {`{year}`} to automatically insert the current year.</p>
+              </div>
+
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-4 text-[#c5a46e]">Social Media Links</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Instagram URL</label>
+                    <input
+                      type="url"
+                      value={content.footer.socialLinks.instagram}
+                      onChange={(e) => updateFooter('socialLinks', { ...content.footer.socialLinks, instagram: e.target.value })}
+                      className="input w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Facebook URL</label>
+                    <input
+                      type="url"
+                      value={content.footer.socialLinks.facebook}
+                      onChange={(e) => updateFooter('socialLinks', { ...content.footer.socialLinks, facebook: e.target.value })}
+                      className="input w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#94a3b8] block mb-1.5">Discord URL</label>
+                    <input
+                      type="url"
+                      value={content.footer.socialLinks.discord}
+                      onChange={(e) => updateFooter('socialLinks', { ...content.footer.socialLinks, discord: e.target.value })}
+                      className="input w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ABOUT */}
+        {activeSection === 'about' && (
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tighter">About Page Content</h2>
+              <p className="text-[#94a3b8] mt-1">Edit the main descriptive text on the About page.</p>
+            </div>
+
+            <div className="max-w-3xl space-y-6">
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-2 text-[#c5a46e]">Intro Text (under main title)</h3>
+                <textarea
+                  value={content.about.introText}
+                  onChange={(e) => updateAbout('introText', e.target.value)}
+                  className="input w-full min-h-[80px]"
+                  rows={3}
+                />
+              </div>
+
+              <div className="bg-[#0a0d18] border border-[#1f2535] rounded-2xl p-6">
+                <h3 className="font-semibold mb-2 text-[#c5a46e]">Grand Opening Description</h3>
+                <textarea
+                  value={content.about.grandOpeningText}
+                  onChange={(e) => updateAbout('grandOpeningText', e.target.value)}
+                  className="input w-full min-h-[140px]"
+                  rows={6}
+                />
+              </div>
+            </div>
           </div>
         )}
 

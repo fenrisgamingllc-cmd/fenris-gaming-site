@@ -24,6 +24,9 @@ export interface ManagedEvent {
   price?: string;
 }
 
+// Core hero buttons that must always exist in this order
+export const CORE_HERO_BUTTON_IDS = ['btn-1', 'btn-2', 'btn-3', 'btn-4'];
+
 export interface SiteContent {
   hero: {
     headline: string;
@@ -157,20 +160,21 @@ export function loadContent(): SiteContent {
         const savedButtons: any[] = parsed.heroButtons || [];
         const defaults = getDefaultContent().heroButtons;
 
-        // If no saved buttons, return the clean defaults (correct order)
-        if (savedButtons.length === 0) {
-          return defaults;
-        }
+        // Create lookup for saved edits
+        const savedById = new Map(savedButtons.map((b: any) => [b.id, b]));
 
-        // Create lookup map from saved data (preserves user's label/url edits)
-        const savedById = new Map(savedButtons.map((b) => [b.id, b]));
-
-        // Always return buttons in the order defined in defaults
-        // Merge saved edits on top of defaults
-        return defaults.map((def) => {
+        // Always enforce the exact core 4 buttons in the defined order.
+        // Use saved data only for label/url overrides.
+        const coreButtons = defaults.map((def) => {
           const saved = savedById.get(def.id);
           return saved ? { ...def, ...saved } : def;
         });
+
+        // Allow extra user-added buttons after the core ones (optional future-proofing)
+        const defaultIds = new Set(defaults.map((d) => d.id));
+        const extraButtons = savedButtons.filter((b: any) => !defaultIds.has(b.id));
+
+        return [...coreButtons, ...extraButtons];
       })(),
       announcements: parsed.announcements ?? [],
       events: parsed.events?.length ? parsed.events : getDefaultContent().events,

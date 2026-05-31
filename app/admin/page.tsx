@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSiteContent, type SiteContent, type HeroButton, type Announcement, type ManagedEvent, generateId, getDefaultContent } from '@/lib/content';
+import { useSiteContent, type SiteContent, type HeroButton, type Announcement, type ManagedEvent, generateId, getDefaultContent, CORE_HERO_BUTTON_IDS } from '@/lib/content';
 import { toast } from 'sonner';
 import { 
   Save, RotateCcw, Eye, LogOut, Plus, Trash2, ArrowUp, ArrowDown, 
@@ -522,7 +522,7 @@ export default function AdminDashboard() {
                       BUTTON {idx + 1} {button.isExternal ? '• EXTERNAL' : '• INTERNAL'}
                     </div>
                     <div className="flex items-center gap-1">
-                      {content.heroButtons.length > 1 && (
+                      {!CORE_HERO_BUTTON_IDS.includes(button.id) && content.heroButtons.length > 1 && (
                         <>
                           <button
                             onClick={() => moveHeroButton(button.id, -1)}

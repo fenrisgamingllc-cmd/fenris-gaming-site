@@ -2,15 +2,17 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { recurringSchedule, type GameEvent } from '@/lib/events';
+import { useSiteContent } from '@/lib/content';
 import EventModal from '@/components/EventModal';
 
 
 export default function EventsPage() {
-  const [selectedEvent, setSelectedEvent] = useState<GameEvent | null>(null);
+  const { content: siteContent } = useSiteContent();
+
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openEvent = (event: GameEvent) => {
+  const openEvent = (event: any) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
@@ -45,7 +47,7 @@ export default function EventsPage() {
         </div>
       </div>
 
-      {/* WEEKLY RECURRING SCHEDULE */}
+      {/* WEEKLY RECURRING SCHEDULE - driven by Admin */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -64,7 +66,7 @@ export default function EventsPage() {
             { day: "Friday", dayNum: 5 },
             { day: "Saturday", dayNum: 6 },
           ].map(({ day, dayNum }) => {
-            const dayEvents = recurringSchedule.filter(e => e.dayOfWeek === dayNum);
+            const dayEvents = siteContent.events.filter(e => e.isRecurring && e.dayOfWeek === dayNum);
             if (dayEvents.length === 0) return null;
 
             return (

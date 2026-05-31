@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   title: 'Fenris Gaming | Tabletop Gaming Hall in Hagerstown, MD',
   description: 'Your premier destination for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more. A welcoming community gaming hall in Hagerstown, Maryland with events, open play, and great deals on new & used models and trading cards.',
   icons: {
-    icon: {
-      url: '/logo.svg',
-      type: 'image/svg+xml',
-    },
+    icon: [
+      { url: '/icon.png', sizes: '64x64', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
   },
   openGraph: {
     title: 'Fenris Gaming Hall | Hagerstown, MD',

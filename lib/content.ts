@@ -154,25 +154,23 @@ export function loadContent(): SiteContent {
       ...parsed,
       hero: { ...getDefaultContent().hero, ...parsed.hero },
       heroButtons: (() => {
-        const savedButtons = parsed.heroButtons || [];
-        const defaults = getDefaultContent().heroButtons; // canonical order + core buttons
+        const savedButtons: any[] = parsed.heroButtons || [];
+        const defaults = getDefaultContent().heroButtons;
 
+        // If no saved buttons, return the clean defaults (correct order)
         if (savedButtons.length === 0) {
           return defaults;
         }
 
-        const savedMap = new Map(savedButtons.map((b: any) => [b.id, b]));
+        // Create lookup map from saved data (preserves user's label/url edits)
+        const savedById = new Map(savedButtons.map((b) => [b.id, b]));
 
-        // Build final list based on defaults order.
-        // Use saved version (for label/url edits) if it exists, otherwise default.
-        // This ensures the 4 buttons always appear in the correct order.
-        const final = defaults.map(def => savedMap.get(def.id) || def);
-
-        // Preserve any extra user-added buttons (they will appear after the core 4)
-        const defaultIds = new Set(defaults.map(d => d.id));
-        const extras = savedButtons.filter((b: any) => !defaultIds.has(b.id));
-
-        return [...final, ...extras];
+        // Always return buttons in the order defined in defaults
+        // Merge saved edits on top of defaults
+        return defaults.map((def) => {
+          const saved = savedById.get(def.id);
+          return saved ? { ...def, ...saved } : def;
+        });
       })(),
       announcements: parsed.announcements ?? [],
       events: parsed.events?.length ? parsed.events : getDefaultContent().events,

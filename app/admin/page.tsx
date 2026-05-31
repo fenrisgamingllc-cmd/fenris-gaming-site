@@ -121,12 +121,12 @@ export default function AdminDashboard() {
   };
 
   const restoreDefaultHeroButtons = () => {
-    if (!confirm('Restore the 5 official hero buttons (including TCG Player)? This will replace your current button list.')) return;
+    if (!confirm('Restore the 4 official hero buttons? This will replace your current list with the default order.')) return;
     updateContent((prev) => ({
       ...prev,
       heroButtons: getDefaultContent().heroButtons,
     }));
-    toast.success('Default hero buttons restored (5 buttons)');
+    toast.success('Default 4 hero buttons restored');
   };
 
   const moveHeroButton = (id: string, direction: -1 | 1) => {

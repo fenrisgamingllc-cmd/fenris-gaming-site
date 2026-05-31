@@ -272,7 +272,7 @@ export default function Home() {
             High-end sixth-scale and premium collectible figures. Limited authentic pieces from Sideshow and Hot Toys with exceptional detail.
           </p>
           <a
-            href="https://fenrisgamingllc.com/collections/sideshow"
+            href="https://fenrisgaming.myshopify.com/collections/sideshow"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary px-9 h-12 text-sm"

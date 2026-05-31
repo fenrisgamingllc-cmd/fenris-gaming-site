@@ -98,13 +98,13 @@ const DEFAULT_CONTENT: SiteContent = {
     {
       id: 'btn-2',
       label: 'Shop Models',
-      url: 'https://fenrisgaming.myshopify.com/collections/all',
+      url: 'https://fenrisgaming.myshopify.com/',
       isExternal: true,
     },
     {
       id: 'btn-3',
       label: 'Shop Collectibles',
-      url: 'https://fenrisgamingllc.com/collections/sideshow',
+      url: 'https://fenrisgaming.myshopify.com/collections/sideshow',
       isExternal: true,
     },
     {

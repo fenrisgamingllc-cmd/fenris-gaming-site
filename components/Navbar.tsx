@@ -15,8 +15,8 @@ const navLinks = [
 ];
 
 const shopLinks = [
-  { href: 'https://fenrisgamingllc.com/collections/all', label: 'Shop Models' },
-  { href: 'https://fenrisgamingllc.com/collections/sideshow', label: 'Collectibles' },
+  { href: 'https://fenrisgaming.myshopify.com/', label: 'Shop Models' },
+  { href: 'https://fenrisgaming.myshopify.com/collections/sideshow', label: 'Collectibles' },
   { href: 'https://fenrisgamingllc.tcgplayerpro.com/', label: 'TCG Player' },
 ];
 
@@ -130,7 +130,7 @@ export default function Navbar() {
               <div className="px-4 text-[#c5a46e] text-xs tracking-[2.5px] font-semibold mb-2">SHOP</div>
               <div className="space-y-1">
                 <a
-                  href="https://fenrisgamingllc.com/collections/all"
+                  href="https://fenrisgaming.myshopify.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
@@ -139,7 +139,7 @@ export default function Navbar() {
                   Shop Models
                 </a>
                 <a
-                  href="https://fenrisgamingllc.com/collections/sideshow"
+                  href="https://fenrisgaming.myshopify.com/collections/sideshow"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}

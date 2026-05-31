@@ -112,7 +112,7 @@ export default function Footer() {
 
             <span className="hidden md:inline">•</span>
 
-            <a href="https://fenrisgamingllc.com/collections/all" target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
+            <a href="https://fenrisgaming.myshopify.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
               Shop on Shopify
             </a>
             <a href="/getting-started" className="hover:text-[#9ca3af]">

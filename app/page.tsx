@@ -182,7 +182,7 @@ export default function Home() {
               </Link>
 
               <a
-                href="https://fenrisgamingllc.com/collections/all"
+                href="https://fenrisgaming.myshopify.com/collections/all"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary px-10 h-14 text-base"

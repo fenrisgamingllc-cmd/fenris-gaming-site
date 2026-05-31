@@ -22,10 +22,59 @@ export default function Home() {
   // Dynamic site content from admin dashboard (localStorage)
   const { content: siteContent } = useSiteContent();
 
-  // Show the next 4 upcoming events, sorted by date
-  const upcomingEvents = [...events]
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(0, 4);
+  // Generate upcoming events from admin-managed data (preferred)
+  const upcomingEventsFromAdmin = React.useMemo(() => {
+    const now = new Date();
+    const twoWeeksFromNow = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+    const results: Array<{
+      id: string;
+      title: string;
+      date: string;
+      time: string;
+      description: string;
+      price?: string;
+      isRecurring?: boolean;
+    }> = [];
+
+    siteContent.events.forEach((ev) => {
+      if (ev.isRecurring && typeof ev.dayOfWeek === 'number') {
+        // Calculate next occurrence
+        const daysUntil = (ev.dayOfWeek - now.getDay() + 7) % 7 || 7;
+        const nextDate = new Date(now);
+        nextDate.setDate(now.getDate() + daysUntil);
+
+        if (nextDate <= twoWeeksFromNow) {
+          results.push({
+            id: ev.id,
+            title: ev.title,
+            date: nextDate.toISOString().split('T')[0],
+            time: ev.time,
+            description: ev.description,
+            price: ev.price,
+            isRecurring: true,
+          });
+        }
+      } else if (!ev.isRecurring && ev.date) {
+        const eventDate = new Date(ev.date);
+        if (eventDate >= now && eventDate <= twoWeeksFromNow) {
+          results.push({
+            id: ev.id,
+            title: ev.title,
+            date: ev.date,
+            time: ev.time,
+            description: ev.description,
+            price: ev.price,
+            isRecurring: false,
+          });
+        }
+      }
+    });
+
+    return results
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .slice(0, 4);
+  }, [siteContent.events]);
 
   // Dynamic gallery from admin dashboard (falls back to defaults in lib/content)
   const communityPhotos = siteContent.homepageGallery;
@@ -121,7 +170,7 @@ export default function Home() {
                 textShadow: '0 4px 20px rgba(0,0,0,0.9), 0 12px 40px rgba(0,0,0,0.75)'
               }}
             >
-              {siteContent.hero.headline}
+              {siteContent.hero.headline || 'Fenris Gaming Hall'}
             </motion.h1>
 
             {/* Elegant Tagline */}
@@ -132,7 +181,7 @@ export default function Home() {
               className="text-[1.35rem] sm:text-[1.65rem] lg:text-[1.85rem] text-white/95 tracking-[-0.4px] mb-10 font-medium"
               style={{ textShadow: '0 3px 12px rgba(0,0,0,0.85)' }}
             >
-              {siteContent.hero.tagline}
+              {siteContent.hero.tagline || 'Your Table Awaits'}
             </motion.p>
 
             {/* Game Systems Line */}
@@ -140,21 +189,21 @@ export default function Home() {
               Warhammer 40k • Age of Sigmar • Horus Heresy • Magic • Pokémon • One Piece • Gundam Card Game • Bolt Action • Star Wars Unlimited
             </div>
 
-            {/* Large, Bold, High-Contrast CTAs — driven by admin dashboard */}
+            {/* Large, Bold, High-Contrast CTAs — controlled from Admin Dashboard */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 0.6, delay: 0.25 }}
               className="flex flex-col sm:flex-row items-start gap-4"
             >
-              {siteContent.heroButtons.map((btn) =>
+              {siteContent.heroButtons.map((btn) => (
                 btn.isExternal ? (
                   <a
                     key={btn.id}
                     href={btn.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={btn.label === 'Join the Discord' ? 'btn-discord px-10 h-14 text-base' : 'btn-primary px-10 h-14 text-base'}
+                    className="btn-primary px-10 h-14 text-base"
                   >
                     {btn.label}
                   </a>
@@ -167,7 +216,7 @@ export default function Home() {
                     {btn.label}
                   </Link>
                 )
-              )}
+              ))}
             </motion.div>
           </div>
         </div>
@@ -246,9 +295,58 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {upcomingEvents.map((event) => (
-            <EventCard key={event.id} event={event} onClick={openEvent} />
-          ))}
+          {upcomingEventsFromAdmin.length > 0 ? (
+            upcomingEventsFromAdmin.map((event) => (
+              <div
+                key={event.id}
+                onClick={() => {
+                  // Simple modal for now using admin data
+                  setSelectedEvent({
+                    id: parseInt(event.id.slice(-6), 36) || 999,
+                    title: event.title,
+                    date: event.date,
+                    time: event.time,
+                    description: event.description,
+                    price: event.price,
+                    category: 'other' as any,
+                    recurring: event.isRecurring ? 'Recurring weekly' : undefined,
+                  } as any);
+                  setIsModalOpen(true);
+                }}
+                className="card group cursor-pointer rounded-3xl p-6 flex flex-col h-full"
+              >
+                <div className="mb-3">
+                  <div className="text-xs uppercase tracking-[1px] text-[#9ca3af] font-medium">
+                    {new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                  </div>
+                  <h3 className="font-semibold text-lg leading-tight mt-0.5 group-hover:text-[#c5a46e] transition-colors pr-2">
+                    {event.title}
+                  </h3>
+                </div>
+
+                <div className="mt-auto space-y-2 text-sm text-[#9ca3af]">
+                  <div className="flex items-center gap-2">
+                    <span>{event.time}</span>
+                  </div>
+                  <p className="line-clamp-2 text-xs pt-1 text-[#cbd5e1]">
+                    {event.description}
+                  </p>
+                  {event.price && (
+                    <div className="text-xs pt-1">{event.price}</div>
+                  )}
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-[#1f2535] text-xs text-[#c5a46e] font-medium group-hover:text-white transition-colors">
+                  View details →
+                </div>
+              </div>
+            ))
+          ) : (
+            // Fallback to old system if no admin events yet
+            events.slice(0, 4).map((event) => (
+              <EventCard key={event.id} event={event} onClick={openEvent} />
+            ))
+          )}
         </div>
 
         <div className="text-center mt-10">

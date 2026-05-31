@@ -72,12 +72,6 @@ const DEFAULT_CONTENT: SiteContent = {
       url: 'https://fenrisgamingllc.tcgplayerpro.com/',
       isExternal: true,
     },
-    {
-      id: 'btn-5',
-      label: 'Join the Discord',
-      url: 'https://discord.gg/AGnfaCStVA',
-      isExternal: true,
-    },
   ],
   announcements: [],
   events: [
@@ -160,18 +154,25 @@ export function loadContent(): SiteContent {
       ...parsed,
       hero: { ...getDefaultContent().hero, ...parsed.hero },
       heroButtons: (() => {
-        const savedButtons = parsed.heroButtons;
-        if (!savedButtons || savedButtons.length === 0) {
-          return getDefaultContent().heroButtons;
+        const savedButtons = parsed.heroButtons || [];
+        const defaults = getDefaultContent().heroButtons; // canonical order + core buttons
+
+        if (savedButtons.length === 0) {
+          return defaults;
         }
 
-        const defaultButtons = getDefaultContent().heroButtons;
-        const savedIds = new Set(savedButtons.map((b: any) => b.id));
+        const savedMap = new Map(savedButtons.map((b: any) => [b.id, b]));
 
-        // Inject any newly added default buttons (e.g. "TCG Player") that the saved data doesn't have yet
-        const missingDefaults = defaultButtons.filter(db => !savedIds.has(db.id));
+        // Build final list based on defaults order.
+        // Use saved version (for label/url edits) if it exists, otherwise default.
+        // This ensures the 4 buttons always appear in the correct order.
+        const final = defaults.map(def => savedMap.get(def.id) || def);
 
-        return [...savedButtons, ...missingDefaults];
+        // Preserve any extra user-added buttons (they will appear after the core 4)
+        const defaultIds = new Set(defaults.map(d => d.id));
+        const extras = savedButtons.filter((b: any) => !defaultIds.has(b.id));
+
+        return [...final, ...extras];
       })(),
       announcements: parsed.announcements ?? [],
       events: parsed.events?.length ? parsed.events : getDefaultContent().events,

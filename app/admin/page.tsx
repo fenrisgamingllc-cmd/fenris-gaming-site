@@ -499,7 +499,7 @@ export default function AdminDashboard() {
             <div className="mb-8 flex items-center justify-between">
               <div>
                 <h2 className="text-3xl font-semibold tracking-tighter">Hero Buttons</h2>
-                <p className="text-[#94a3b8] mt-1">Calls-to-action shown in the homepage hero. (Currently 5 official buttons including TCG Player)</p>
+                <p className="text-[#94a3b8] mt-1">Calls-to-action shown in the homepage hero. These 4 buttons are controlled here (order is enforced).</p>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={addHeroButton} className="btn-primary flex items-center gap-2 px-5 h-10 text-sm">
@@ -577,7 +577,7 @@ export default function AdminDashboard() {
             </div>
 
             <p className="mt-6 text-xs text-[#64748b]">
-              There are currently 5 official buttons (including TCG Player). You can add more or delete any. The first button is treated as internal (uses Next.js Link). The others open in new tabs.
+              The 4 core buttons above are always shown on the homepage in this order. You can edit their labels and URLs. Extra buttons you add will appear after them.
             </p>
           </div>
         )}
@@ -858,7 +858,7 @@ export default function AdminDashboard() {
             </div>
 
             <p className="mt-8 text-xs text-[#64748b]">
-              These events are stored locally. A future update can connect this data to the public Events page and homepage preview.
+              These events power the "This Week at the Hall" section on the homepage. The full public calendar is still on the old system (sync coming soon).
             </p>
           </div>
         )}

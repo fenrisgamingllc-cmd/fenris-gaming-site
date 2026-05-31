@@ -7,6 +7,7 @@ import { events } from '@/lib/events';
 import EventCard from '@/components/EventCard';
 import EventModal from '@/components/EventModal';
 import type { GameEvent } from '@/lib/events';
+import { useSiteContent } from '@/lib/content';
 import { Calendar, MapPin, ArrowRight, Sword } from 'lucide-react';
 
 export default function Home() {
@@ -18,44 +19,16 @@ export default function Home() {
   const [lightboxCategory, setLightboxCategory] = useState('');
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Dynamic site content from admin dashboard (localStorage)
+  const { content: siteContent } = useSiteContent();
+
   // Show the next 4 upcoming events, sorted by date
   const upcomingEvents = [...events]
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 4);
 
-  // Community Photos Data - grouped by category for lightbox
-  const communityPhotos = {
-    "The Gaming Hall": [
-      "/images/The Gaming Hall/IMG_0790.jpeg",
-      "/images/The Gaming Hall/IMG_1280.jpeg",
-      "/images/The Gaming Hall/IMG_9018.jpeg",
-    ],
-    "Warhammer 40K & Horus Heresy": [
-      "/images/Warhammer 40K & Horus Heresy/IMG_0744.jpeg",
-      "/images/Warhammer 40K & Horus Heresy/IMG_0753.jpeg",
-      "/images/Warhammer 40K & Horus Heresy/IMG_8704.jpeg",
-    ],
-    "Community Nights": [
-      "/images/Community Nights/20250517_131409.jpg",
-      "/images/Community Nights/IMG_0078.jpeg",
-      "/images/Community Nights/IMG_8712.jpeg",
-    ],
-    "D&D Nights": [
-      "/images/D&D Nights/IMG_0074.jpeg",
-      "/images/D&D Nights/IMG_1538.JPG",
-      "/images/D&D Nights/IMG_2730.JPG",
-    ],
-    "Magic & Card Games": [
-      "/images/Magic & Card Games/IMG_0757.jpeg",
-      "/images/Magic & Card Games/IMG_8698.jpeg",
-      "/images/Magic & Card Games/IMG_9054.jpeg",
-    ],
-    "Busy Nights": [
-      "/images/Busy Nights/IMG_0077.jpeg",
-      "/images/Busy Nights/IMG_8990.jpeg",
-      "/images/Busy Nights/IMG_9546.jpeg",
-    ],
-  };
+  // Dynamic gallery from admin dashboard (falls back to defaults in lib/content)
+  const communityPhotos = siteContent.homepageGallery;
 
   const openLightbox = (category: string, index: number) => {
     setLightboxCategory(category);
@@ -148,7 +121,7 @@ export default function Home() {
                 textShadow: '0 4px 20px rgba(0,0,0,0.9), 0 12px 40px rgba(0,0,0,0.75)'
               }}
             >
-              Fenris Gaming Hall
+              {siteContent.hero.headline}
             </motion.h1>
 
             {/* Elegant Tagline */}
@@ -159,7 +132,7 @@ export default function Home() {
               className="text-[1.35rem] sm:text-[1.65rem] lg:text-[1.85rem] text-white/95 tracking-[-0.4px] mb-10 font-medium"
               style={{ textShadow: '0 3px 12px rgba(0,0,0,0.85)' }}
             >
-              Your Table Awaits
+              {siteContent.hero.tagline}
             </motion.p>
 
             {/* Game Systems Line */}
@@ -167,46 +140,34 @@ export default function Home() {
               Warhammer 40k • Age of Sigmar • Horus Heresy • Magic • Pokémon • One Piece • Gundam Card Game • Bolt Action • Star Wars Unlimited
             </div>
 
-            {/* Large, Bold, High-Contrast CTAs */}
+            {/* Large, Bold, High-Contrast CTAs — driven by admin dashboard */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 0.6, delay: 0.25 }}
               className="flex flex-col sm:flex-row items-start gap-4"
             >
-              <Link
-                href="/events"
-                className="btn-primary px-10 h-14 text-base"
-              >
-                Explore Events
-              </Link>
-
-              <a
-                href="https://fenrisgaming.myshopify.com/collections/all"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary px-10 h-14 text-base"
-              >
-                Shop Models
-              </a>
-
-              <a
-                href="https://fenrisgamingllc.com/collections/sideshow"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary px-10 h-14 text-base"
-              >
-                Shop Collectibles
-              </a>
-
-              <a
-                href="https://discord.gg/AGnfaCStVA"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-discord px-10 h-14 text-base"
-              >
-                Join the Discord
-              </a>
+              {siteContent.heroButtons.map((btn) =>
+                btn.isExternal ? (
+                  <a
+                    key={btn.id}
+                    href={btn.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={btn.label === 'Join the Discord' ? 'btn-discord px-10 h-14 text-base' : 'btn-primary px-10 h-14 text-base'}
+                  >
+                    {btn.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={btn.id}
+                    href={btn.url}
+                    className="btn-primary px-10 h-14 text-base"
+                  >
+                    {btn.label}
+                  </Link>
+                )
+              )}
             </motion.div>
           </div>
         </div>
@@ -215,14 +176,29 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c5a46e]/40 to-transparent z-20" />
       </div>
 
-      {/* Trust Bar — Responsive & Clean on Mobile */}
+      {/* Announcements Banner — right below hero */}
+      {siteContent.announcements.some(a => a.active && a.text.trim()) && (
+        <div className="bg-[#0c0f1a] border-b border-[#c5a46e]/30">
+          <div className="max-w-6xl mx-auto px-5 py-3.5 text-sm text-center text-[#e2e8f0]">
+            {siteContent.announcements
+              .filter(a => a.active && a.text.trim())
+              .map((a, index) => (
+                <span key={a.id} className={index > 0 ? 'ml-4 pl-4 border-l border-[#c5a46e]/30' : ''}>
+                  {a.text}
+                </span>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Trust Bar — Responsive & Clean on Mobile (editable via admin) */}
       <div className="border-b border-[#1f2535] bg-[#05070f]">
         <div className="max-w-6xl mx-auto px-5 py-4 md:py-0 md:h-16 flex flex-col md:flex-row items-center justify-center gap-y-2 md:gap-y-0 md:gap-x-8 text-sm text-[#94a3b8] tracking-[1px] text-center">
-          <div>2,000+ sq ft of play space</div>
+          <div>{siteContent.trustBarSegments[0]}</div>
           <div className="hidden md:block w-px h-3.5 bg-[#1f2535]" />
-          <div>Open 7 days a week</div>
+          <div>{siteContent.trustBarSegments[1]}</div>
           <div className="hidden md:block w-px h-3.5 bg-[#1f2535]" />
-          <div>Warhammer 40k • Horus Heresy • MTG • Pokémon • One Piece • Gundam Card Game • Bolt Action • Star Wars Unlimited</div>
+          <div>{siteContent.trustBarSegments[2]}</div>
         </div>
       </div>
 

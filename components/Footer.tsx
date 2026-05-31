@@ -109,6 +109,10 @@ export default function Footer() {
             <a href="https://discord.gg/AGnfaCStVA" target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
               Join the Discord
             </a>
+            <span className="hidden md:inline text-[#374151]">•</span>
+            <Link href="/admin" className="hover:text-[#c5a46e] font-medium">
+              Admin
+            </Link>
           </div>
         </div>
       </div>

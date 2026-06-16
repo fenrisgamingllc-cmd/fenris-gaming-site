@@ -277,7 +277,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="btn-primary px-9 h-12 text-sm"
           >
-            Shop Collectibles
+            Collectibles
           </a>
         </div>
       </div>

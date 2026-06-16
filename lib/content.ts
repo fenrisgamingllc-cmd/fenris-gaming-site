@@ -97,19 +97,19 @@ const DEFAULT_CONTENT: SiteContent = {
     },
     {
       id: 'btn-2',
-      label: 'Shop Models',
+      label: 'Store',
       url: 'https://fenrisgaming.myshopify.com/',
       isExternal: true,
     },
     {
       id: 'btn-3',
-      label: 'Shop Collectibles',
+      label: 'Collectibles',
       url: 'https://fenrisgaming.myshopify.com/collections/sideshow',
       isExternal: true,
     },
     {
       id: 'btn-4',
-      label: 'TCG Player',
+      label: 'TCG Singles',
       url: 'https://fenrisgamingllc.tcgplayerpro.com/',
       isExternal: true,
     },

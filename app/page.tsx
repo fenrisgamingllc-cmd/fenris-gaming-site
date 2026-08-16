@@ -186,7 +186,7 @@ export default function Home() {
 
             {/* Game Systems Line */}
             <div className="mb-10 text-[#c5a46e] text-sm tracking-[1.8px] font-medium opacity-90">
-              Warhammer 40k • Age of Sigmar • Horus Heresy • Magic • Pokémon • One Piece • Gundam Card Game • Bolt Action • Star Wars Unlimited
+              Warhammer 40k • Age of Sigmar • Horus Heresy • Magic • Pokémon • One Piece • Gundam Card Game • Bolt Action
             </div>
 
             {/* Large, Bold, High-Contrast CTAs — controlled from Admin Dashboard */}
@@ -197,25 +197,30 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-start gap-4"
             >
               {siteContent.heroButtons.map((btn) => (
-                btn.isExternal ? (
-                  <a
-                    key={btn.id}
-                    href={btn.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary px-10 h-14 text-base"
-                  >
-                    {btn.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={btn.id}
-                    href={btn.url}
-                    className="btn-primary px-10 h-14 text-base"
-                  >
-                    {btn.label}
-                  </Link>
-                )
+                <div key={btn.id} className="flex flex-col items-center sm:items-start">
+                  {btn.isExternal ? (
+                    <a
+                      href={btn.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary px-10 h-14 text-base"
+                    >
+                      {btn.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={btn.url}
+                      className="btn-primary px-10 h-14 text-base"
+                    >
+                      {btn.label}
+                    </Link>
+                  )}
+                  {btn.subtitle && (
+                    <span className="mt-1.5 text-[11px] tracking-[0.6px] text-[#94a3b8]">
+                      {btn.subtitle}
+                    </span>
+                  )}
+                </div>
               ))}
             </motion.div>
           </div>
@@ -366,7 +371,7 @@ export default function Home() {
           <h2 className="text-5xl font-semibold tracking-[-2.2px] mb-6">Built by gamers,<br />for gamers.</h2>
           <p className="text-[#94a3b8] text-lg max-w-xl mx-auto">
             After twelve years of running a home gaming club, we finally built the hall we always wanted — 
-            massive tables, incredible terrain, expert staff, and a truly welcoming community for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic, Pokémon TCG, One Piece, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more.
+            massive tables, incredible terrain, expert staff, and a truly welcoming community for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic, Pokémon TCG, One Piece, Gundam Card Game, Bolt Action, and more.
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mt-9">
@@ -386,13 +391,13 @@ export default function Home() {
           <div className="text-[#c5a46e] text-xs tracking-[3px] font-semibold mb-2">NEW TO TABLETOP?</div>
           <h2 className="text-4xl font-semibold tracking-[-1.5px] mb-4">Not sure where to start?</h2>
           <p className="text-[#94a3b8] text-lg">
-            We wrote the guide we wish we had when we were beginners. Real answers about Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, Star Wars Unlimited, used models & cards at great prices, and what it’s actually like to walk in the door.
+            We wrote the guide we wish we had when we were beginners. Real answers about Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, used models & cards at great prices, and what it’s actually like to walk in the door.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-10">
           {[
-            { q: "What games do we support?", a: "Warhammer 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece TCG, Gundam Card Game, Bolt Action, Star Wars Unlimited & more. Great deals on new & used too." },
+            { q: "What games do we support?", a: "Warhammer 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece TCG, Gundam Card Game, Bolt Action & more. Great deals on new & used too." },
             { q: "How do I get into Magic?", a: "Start with Commander. We run Friday Night Magic every week and have a very welcoming community." },
             { q: "Do I need to bring anything?", a: "We have tables and terrain. For Warhammer and most minis games, players bring their own models, dice, and supplies. Plenty of room to bring what you need." },
           ].map((item, i) => (
@@ -502,17 +507,11 @@ export default function Home() {
           rel="noopener noreferrer"
           className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-[#d1d5db] bg-white px-6 py-4 shadow-sm transition-all hover:shadow-md active:scale-[0.985]"
         >
-          <div className="flex items-center gap-3">
-            {/* Google "G" logo */}
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#4285F4] via-[#34A853] to-[#FBBC05] text-white text-sm font-bold shadow-sm ring-1 ring-black/5">
-              G
-            </div>
-            <div className="text-left">
-              <div className="font-semibold text-[#202124] tracking-[-0.2px]">See Our Google Reviews</div>
-              <div className="flex items-center gap-1 text-sm">
-                <span className="text-[#fbbc05]">★★★★★</span>
-                <span className="text-[#5f6368]">4.9/5 from 180+ reviews</span>
-              </div>
+          <div className="text-left">
+            <div className="font-semibold text-[#202124] tracking-[-0.2px]">See Our Google Reviews</div>
+            <div className="flex items-center gap-1 text-sm">
+              <span className="text-[#fbbc05]">★★★★★</span>
+              <span className="text-[#5f6368]">4.9/5 from 180+ reviews</span>
             </div>
           </div>
         </a>

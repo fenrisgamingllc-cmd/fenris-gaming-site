@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 
-export default function OldFAQRedirect() {
-  redirect('/getting-started');
+export default function FAQRedirect() {
+  permanentRedirect('/getting-started');
 }

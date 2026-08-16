@@ -1,0 +1,40 @@
+{
+  "hero": {
+    "headline": "Fenris Gaming Hall",
+    "tagline": "Your Table Awaits"
+  },
+  "trustBarSegments": [
+    "2,000+ sq ft of play space",
+    "Open 7 days a week",
+    "Warhammer 40k • Age of Sigmar • Horus Heresy • MTG • Pokémon • One Piece • Gundam Card Game • Bolt Action"
+  ],
+  "heroButtons": [
+    {
+      "id": "btn-1",
+      "label": "Explore Events",
+      "url": "/events",
+      "isExternal": false
+    },
+    {
+      "id": "btn-2",
+      "label": "Store",
+      "url": "https://fenrisgaming.myshopify.com/",
+      "isExternal": true,
+      "subtitle": "Minis & supplies"
+    },
+    {
+      "id": "btn-3",
+      "label": "Collectibles",
+      "url": "https://fenrisgaming.myshopify.com/collections/sideshow",
+      "isExternal": true,
+      "subtitle": "Sideshow & Hot Toys"
+    },
+    {
+      "id": "btn-4",
+      "label": "TCG Singles",
+      "url": "https://fenrisgamingllc.tcgplayerpro.com/",
+      "isExternal": true,
+      "subtitle": "Cards"
+    }
+  ]
+}

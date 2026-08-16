@@ -7,7 +7,6 @@ export type EventCategory =
   | 'one-piece' 
   | 'gundam' 
   | 'bolt-action' 
-  | 'star-wars' 
   | 'open-play' 
   | 'other';
 
@@ -50,11 +49,11 @@ export const recurringSchedule: RecurringEvent[] = [
   },
   {
     id: 2,
-    title: "Roughbound",
+    title: "Riftbound",
     dayOfWeek: 0,
     time: "12:00 PM",
     category: "other",
-    description: "Roughbound event.",
+    description: "Sunday Riftbound play and events. New players welcome.",
     recurring: "Every Sunday",
   },
   {
@@ -97,15 +96,6 @@ export const recurringSchedule: RecurringEvent[] = [
     time: "6:00 PM",
     category: "other",
     description: "Painting, building, and hobby time with good lighting and tables.",
-    recurring: "Every Wednesday",
-  },
-  {
-    id: 7,
-    title: "Star Wars Unlimited",
-    dayOfWeek: 3,
-    time: "6:00 PM",
-    category: "star-wars",
-    description: "Star Wars Unlimited play and events.",
     recurring: "Every Wednesday",
   },
   {
@@ -211,7 +201,6 @@ export const categoryLabels: Record<EventCategory, string> = {
   'one-piece': 'One Piece TCG',
   gundam: 'Gundam Card Game',
   'bolt-action': 'Bolt Action',
-  'star-wars': 'Star Wars Unlimited',
   'open-play': 'Open Play',
   other: 'Special Event',
 };
@@ -223,7 +212,6 @@ export const categoryColors: Record<EventCategory, string> = {
   'one-piece': 'badge-onepiece',
   gundam: 'badge-gundam',
   'bolt-action': 'badge-boltaction',
-  'star-wars': 'badge-starwars',
   'open-play': 'badge-open',
   other: 'badge-other',
 };

@@ -15,9 +15,9 @@ const navLinks = [
 ];
 
 const shopLinks = [
-  { href: 'https://fenrisgaming.myshopify.com/', label: 'Store' },
-  { href: 'https://fenrisgaming.myshopify.com/collections/sideshow', label: 'Collectibles' },
-  { href: 'https://fenrisgamingllc.tcgplayerpro.com/', label: 'TCG Singles' },
+  { href: 'https://fenrisgaming.myshopify.com/', label: 'Store', subtitle: 'Minis & supplies' },
+  { href: 'https://fenrisgaming.myshopify.com/collections/sideshow', label: 'Collectibles', subtitle: 'Sideshow & Hot Toys' },
+  { href: 'https://fenrisgamingllc.tcgplayerpro.com/', label: 'TCG Singles', subtitle: 'Cards' },
 ];
 
 export default function Navbar() {
@@ -79,9 +79,10 @@ export default function Navbar() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="nav-link text-[#cbd5e1] hover:text-white text-xs lg:text-sm"
+                    className="nav-link flex flex-col items-start leading-tight text-[#cbd5e1] hover:text-white"
                   >
-                    {link.label}
+                    <span className="text-xs lg:text-sm">{link.label}</span>
+                    <span className="text-[10px] text-[#64748b] font-normal tracking-normal">{link.subtitle}</span>
                   </a>
                 ))}
               </div>
@@ -137,6 +138,7 @@ export default function Navbar() {
                   className="block px-4 py-3 font-medium text-[#cbd5e1] hover:text-white hover:bg-[#0f1320] rounded-2xl transition-colors"
                 >
                   Store
+                  <span className="block text-xs font-normal text-[#64748b] mt-0.5">Minis &amp; supplies</span>
                 </a>
                 <a
                   href="https://fenrisgaming.myshopify.com/collections/sideshow"
@@ -146,6 +148,7 @@ export default function Navbar() {
                   className="block px-4 py-3 font-medium text-[#cbd5e1] hover:text-white hover:bg-[#0f1320] rounded-2xl transition-colors"
                 >
                   Collectibles
+                  <span className="block text-xs font-normal text-[#64748b] mt-0.5">Sideshow &amp; Hot Toys</span>
                 </a>
                 <a
                   href="https://fenrisgamingllc.tcgplayerpro.com/"
@@ -155,6 +158,7 @@ export default function Navbar() {
                   className="block px-4 py-3 font-medium text-[#cbd5e1] hover:text-white hover:bg-[#0f1320] rounded-2xl transition-colors"
                 >
                   TCG Singles
+                  <span className="block text-xs font-normal text-[#64748b] mt-0.5">Cards</span>
                 </a>
               </div>
             </div>

@@ -91,14 +91,6 @@ export default function EventsPage() {
           })}
         </div>
 
-        <div className="mt-4 text-xs text-[#6b7280]">
-          Open Play is always free — no table fees. Only tournaments and special events have fees.
-        </div>
-      </div>
-
-      {/* Professional note */}
-      <div className="text-xs text-[#6b7280] mb-6">
-        Open Play is always free — no table fees. Only tournaments and special events have fees.
       </div>
 
       <EventModal event={selectedEvent} isOpen={isModalOpen} onClose={closeModal} />

@@ -7,6 +7,7 @@ export interface HeroButton {
   label: string;
   url: string;
   isExternal: boolean;
+  subtitle?: string;
 }
 
 export interface Announcement {
@@ -86,7 +87,7 @@ const DEFAULT_CONTENT: SiteContent = {
   trustBarSegments: [
     '2,000+ sq ft of play space',
     'Open 7 days a week',
-    'Warhammer 40k • Horus Heresy • MTG • Pokémon • One Piece • Gundam Card Game • Bolt Action • Star Wars Unlimited',
+    'Warhammer 40k • Age of Sigmar • Horus Heresy • MTG • Pokémon • One Piece • Gundam Card Game • Bolt Action',
   ],
   heroButtons: [
     {
@@ -100,18 +101,21 @@ const DEFAULT_CONTENT: SiteContent = {
       label: 'Store',
       url: 'https://fenrisgaming.myshopify.com/',
       isExternal: true,
+      subtitle: 'Minis & supplies',
     },
     {
       id: 'btn-3',
       label: 'Collectibles',
       url: 'https://fenrisgaming.myshopify.com/collections/sideshow',
       isExternal: true,
+      subtitle: 'Sideshow & Hot Toys',
     },
     {
       id: 'btn-4',
       label: 'TCG Singles',
       url: 'https://fenrisgamingllc.tcgplayerpro.com/',
       isExternal: true,
+      subtitle: 'Cards',
     },
   ],
   announcements: [],
@@ -139,9 +143,9 @@ const DEFAULT_CONTENT: SiteContent = {
     },
     {
       id: "gs-4",
-      title: "Bolt Action & Star Wars Miniatures",
-      description: "Historical and licensed miniature games.",
-      content: "We carry and run events for Bolt Action (WWII) and Star Wars Unlimited. These are excellent for players who enjoy historical or themed skirmish and larger games. Open play and dedicated nights available.",
+      title: "Bolt Action",
+      description: "Historical WWII miniature wargaming.",
+      content: "We carry and run events for Bolt Action (WWII). It’s an excellent tabletop wargame for players who enjoy historical skirmish and larger games. Open play and dedicated nights available.",
       icon: "🎯",
     },
     {
@@ -193,12 +197,12 @@ const DEFAULT_CONTENT: SiteContent = {
   },
   about: {
     introText: 'What began as a small group of friends in a living room has become Western Maryland’s premier tabletop gaming destination.',
-    grandOpeningText: 'On Halloween 2025 we cut the ribbon at 11375 Robinwood Drive. Surrounded by family, friends, and the entire local gaming community, we officially opened the space we had dreamed of for over a decade. The hall was designed by gamers, for gamers — with room for large Warhammer tables, comfortable seating, and a true “third space” feel for players of 40k, Horus Heresy, MTG, Pokémon, One Piece, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more.',
+    grandOpeningText: 'On Halloween 2025 we cut the ribbon at 11375 Robinwood Drive. Surrounded by family, friends, and the entire local gaming community, we officially opened the space we had dreamed of for over a decade. The hall was designed by gamers, for gamers — with room for large Warhammer tables, comfortable seating, and a true “third space” feel for players of 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece, Gundam Card Game, Bolt Action, and more.',
   },
   events: [
     // Sunday
     { id: 'evt-1', title: "Commander & Coffee (Magic)", isRecurring: true, dayOfWeek: 0, time: "10:00 AM", description: "Casual Magic Commander with coffee. New players welcome!" },
-    { id: 'evt-2', title: "Roughbound", isRecurring: true, dayOfWeek: 0, time: "12:00 PM", description: "Roughbound event." },
+    { id: 'evt-2', title: "Riftbound", isRecurring: true, dayOfWeek: 0, time: "12:00 PM", description: "Sunday Riftbound play and events. New players welcome." },
     { id: 'evt-3', title: "One Piece TCG", isRecurring: true, dayOfWeek: 0, time: "5:00 PM", description: "One Piece TCG play and events." },
     // Monday
     { id: 'evt-4', title: "Magic Commander", isRecurring: true, dayOfWeek: 1, time: "5:00 PM", description: "Commander night for Magic: The Gathering." },
@@ -206,7 +210,6 @@ const DEFAULT_CONTENT: SiteContent = {
     { id: 'evt-5', title: "Tabletop Free Play", isRecurring: true, dayOfWeek: 2, time: "All Day", description: "Open play for all tabletop games. No formal event — just show up and play." },
     // Wednesday
     { id: 'evt-6', title: "Hobby Night", isRecurring: true, dayOfWeek: 3, time: "6:00 PM", description: "Painting, building, and hobby time with good lighting and tables." },
-    { id: 'evt-7', title: "Star Wars Unlimited", isRecurring: true, dayOfWeek: 3, time: "6:00 PM", description: "Star Wars Unlimited play and events." },
     { id: 'evt-8', title: "Gundam Card Game", isRecurring: true, dayOfWeek: 3, time: "6:30 PM", description: "Gundam Card Game events and play." },
     // Thursday
     { id: 'evt-9', title: "Warhammer Spearhead + Tabletop Free Play", isRecurring: true, dayOfWeek: 4, time: "All Day", description: "Warhammer Spearhead alongside open tabletop free play all day." },
@@ -285,7 +288,7 @@ export function loadContent(): SiteContent {
         // Use saved data only for label/url overrides.
         const coreButtons = defaults.map((def) => {
           const saved = savedById.get(def.id);
-          return saved ? { ...def, ...saved } : def;
+          return saved ? { ...def, ...saved, subtitle: saved.subtitle ?? def.subtitle } : def;
         });
 
         // Allow extra user-added buttons after the core ones (optional future-proofing)
@@ -323,9 +326,75 @@ export function useSiteContent() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loaded = loadContent();
-    setContent(loaded);
-    setIsLoaded(true);
+    const loadAll = async () => {
+      let base = getDefaultContent();
+
+      // Load published content.json if it exists (this is how admin changes become live for everyone after deploy)
+      try {
+        const res = await fetch('/content.json', { cache: 'no-store' });
+        if (res.ok) {
+          const published = await res.json() as Partial<SiteContent>;
+          base = {
+            ...getDefaultContent(),
+            ...published,
+            hero: { ...getDefaultContent().hero, ...published.hero },
+            heroButtons: published.heroButtons || getDefaultContent().heroButtons,
+            announcements: published.announcements ?? getDefaultContent().announcements,
+            events: published.events?.length ? published.events : getDefaultContent().events,
+            gettingStarted: published.gettingStarted?.length ? published.gettingStarted : getDefaultContent().gettingStarted,
+            storeInfo: published.storeInfo || getDefaultContent().storeInfo,
+            footer: published.footer || getDefaultContent().footer,
+            about: published.about || getDefaultContent().about,
+            homepageGallery: published.homepageGallery ?? getDefaultContent().homepageGallery,
+          };
+        }
+      } catch {
+        // no published content yet, use code defaults
+      }
+
+      // Apply localStorage on top (for the admin user's live edits / preview)
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as Partial<SiteContent>;
+
+          const merged = {
+            ...base,
+            ...parsed,
+            hero: { ...base.hero, ...parsed.hero },
+            heroButtons: (() => {
+              const savedButtons: any[] = parsed.heroButtons || [];
+              const defaults = base.heroButtons;
+              const savedById = new Map(savedButtons.map((b: any) => [b.id, b]));
+              const coreButtons = defaults.map((def) => {
+                const saved = savedById.get(def.id);
+                return saved ? { ...def, ...saved, subtitle: saved.subtitle ?? def.subtitle } : def;
+              });
+              const defaultIds = new Set(defaults.map((d) => d.id));
+              const extraButtons = savedButtons.filter((b: any) => !defaultIds.has(b.id));
+              return [...coreButtons, ...extraButtons];
+            })(),
+            announcements: parsed.announcements ?? base.announcements,
+            events: parsed.events?.length ? parsed.events : base.events,
+            gettingStarted: parsed.gettingStarted?.length ? parsed.gettingStarted : base.gettingStarted,
+            storeInfo: parsed.storeInfo || base.storeInfo,
+            footer: parsed.footer || base.footer,
+            about: parsed.about || base.about,
+            homepageGallery: parsed.homepageGallery ?? base.homepageGallery,
+          };
+
+          setContent(merged);
+        } catch {
+          setContent(base);
+        }
+      } else {
+        setContent(base);
+      }
+
+      setIsLoaded(true);
+    };
+
+    loadAll();
   }, []);
 
   const updateContent = (updater: (current: SiteContent) => SiteContent) => {

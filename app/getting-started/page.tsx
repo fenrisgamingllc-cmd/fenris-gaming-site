@@ -6,11 +6,11 @@ import Link from 'next/link';
 const faqs = [
   {
     question: "What kind of products do you sell?",
-    answer: "We run events and sell product for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, and Star Wars Unlimited. We also actively buy and sell used models and trading cards at good discounts, with affordable entry options for new players and collectors looking for great deals.",
+    answer: "We run events and sell product for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, and Bolt Action. We also actively buy and sell used models and trading cards at good discounts, with affordable entry options for new players and collectors looking for great deals.",
   },
   {
     question: "What Warhammer systems do you support?",
-    answer: "We run events and have active communities for Warhammer 40k, Age of Sigmar, and Horus Heresy. Open play is always free with tables and terrain available. We also support Bolt Action and Star Wars Unlimited.",
+    answer: "We run events and have active communities for Warhammer 40k, Age of Sigmar, and Horus Heresy. Open play is always free with tables and terrain available. We also support Bolt Action.",
   },
   {
     question: "How do I get into Magic: The Gathering?",
@@ -57,10 +57,10 @@ export default function GettingStartedPage() {
     <div className="max-w-5xl mx-auto px-5 py-16">
       {/* Hero */}
       <div className="text-center mb-16">
-        <div className="uppercase tracking-[3px] text-[#c5a46e] text-xs mb-3">NEW TO TABLETOP GAMING?</div>
+        <div className="uppercase tracking-[3px] text-[#c5a46e] text-xs mb-3">NEW PLAYER GUIDE &amp; FAQ</div>
         <h1 className="text-6xl font-semibold tracking-[-3px] mb-4">Getting Started at Fenris</h1>
         <p className="text-xl text-[#94a3af] max-w-3xl mx-auto">
-          Whether you’ve never played a game in your life or you’re looking for your next crew, this is the place to begin.
+          Whether you’ve never played a game in your life or you’re looking for your next crew, this is the place to begin. This page is also our FAQ.
         </p>
       </div>
 
@@ -68,7 +68,7 @@ export default function GettingStartedPage() {
       <div className="max-w-3xl mx-auto mb-16 text-center">
         <h2 className="text-3xl font-semibold tracking-tight mb-4">What is Fenris Gaming Hall?</h2>
         <p className="text-[#cbd5e1] text-lg leading-relaxed">
-          We’re a community-first tabletop gaming hall in Hagerstown, Maryland. We run events and sell product for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, Star Wars Unlimited, and more. We buy and sell used models and trading cards at good discounts with affordable entry options. Some come just to paint and hobby with friends. Others treat it as their regular hangout — a real <span className="text-[#c5a46e]">third space</span>.
+          We’re a community-first tabletop gaming hall in Hagerstown, Maryland. We run events and sell product for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, and more. We buy and sell used models and trading cards at good discounts with affordable entry options. Some come just to paint and hobby with friends. Others treat it as their regular hangout — a real <span className="text-[#c5a46e]">third space</span>.
         </p>
       </div>
 
@@ -77,7 +77,7 @@ export default function GettingStartedPage() {
         <h2 className="text-3xl font-semibold tracking-tight mb-8 text-center">What Can You Do Here?</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { title: "Play Games", desc: "Warhammer 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece, Gundam, Bolt Action, Star Wars minis & more." },
+            { title: "Play Games", desc: "Warhammer 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece, Gundam, Bolt Action & more." },
             { title: "Join Events", desc: "Tournaments, leagues, campaigns, and casual events almost every night." },
             { title: "Paint & Hobby", desc: "Dedicated painting tables with good lighting. Many people come just to hobby with friends." },
             { title: "Find Your Crew", desc: "Regulars are genuinely welcoming. A lot of people find their long-term gaming group here." },
@@ -117,7 +117,7 @@ export default function GettingStartedPage() {
             <li>• Warhammer 40k, Age of Sigmar &amp; Horus Heresy</li>
             <li>• Magic: The Gathering (singles &amp; sealed)</li>
             <li>• Pokémon TCG, One Piece TCG &amp; Gundam TCG</li>
-            <li>• Bolt Action &amp; Star Wars Miniatures</li>
+            <li>• Bolt Action</li>
             <li>• Dungeons &amp; Dragons &amp; other RPGs</li>
             <li>• Board Games</li>
             <li>• Painting supplies &amp; hobby tools</li>
@@ -143,7 +143,7 @@ export default function GettingStartedPage() {
       <div>
         <div className="text-center mb-10">
           <div className="text-[#c5a46e] text-xs tracking-[3px] font-semibold mb-2">STILL HAVE QUESTIONS?</div>
-          <h2 className="text-4xl font-semibold tracking-tighter">Common Questions</h2>
+          <h2 className="text-4xl font-semibold tracking-tighter">FAQ</h2>
         </div>
 
         <div className="max-w-3xl mx-auto space-y-3">

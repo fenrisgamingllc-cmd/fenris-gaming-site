@@ -20,7 +20,7 @@ export default function AdminDashboard() {
   const [loginUsername, setLoginUsername] = useState('admin');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [activeSection, setActiveSection] = useState<'hero' | 'trust' | 'buttons' | 'announcements' | 'events' | 'getting-started' | 'store-info' | 'footer' | 'about' | 'gallery' | 'settings'>('hero');
+  const [activeSection, setActiveSection] = useState<'hero' | 'trust' | 'buttons' | 'announcements' | 'events' | 'getting-started' | 'store-info' | 'footer' | 'about' | 'gallery' | 'settings' | 'publish'>('hero');
 
   // Local state for Announcements creation form
   const [newAnnouncementText, setNewAnnouncementText] = useState('');
@@ -68,6 +68,35 @@ export default function AdminDashboard() {
 
   const handlePreview = () => {
     window.open('/', '_blank');
+  };
+
+  // === PUBLISH: Export current content as content.json for deployment ===
+  const handlePublishDownload = () => {
+    const dataStr = JSON.stringify(content, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'content.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+
+    toast.success('content.json downloaded! Place it in public/content.json and push to deploy.');
+  };
+
+  const handleCopyJson = () => {
+    const dataStr = JSON.stringify(content, null, 2);
+    navigator.clipboard.writeText(dataStr).then(() => {
+      toast.success('Full content JSON copied to clipboard. Paste into public/content.json');
+    });
+  };
+
+  const handleCopyDefaults = () => {
+    // Provide a ready-to-paste TS snippet for lib/content.ts if they prefer editing code
+    const snippet = `const DEFAULT_CONTENT: SiteContent = ${JSON.stringify(content, null, 2)};`;
+    navigator.clipboard.writeText(snippet).then(() => {
+      toast.success('DEFAULT_CONTENT snippet copied. Replace in lib/content.ts and push.');
+    });
   };
 
   // === HERO ===
@@ -493,6 +522,7 @@ export default function AdminDashboard() {
               { id: 'about', label: 'About' },
               { id: 'gallery', label: 'Gallery' },
               { id: 'settings', label: 'Settings' },
+              { id: 'publish', label: 'Publish' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -662,6 +692,60 @@ export default function AdminDashboard() {
             <p className="mt-6 text-xs text-[#64748b]">
               The 4 core buttons above are always shown on the homepage in this order. You can edit their labels and URLs. Extra buttons you add will appear after them.
             </p>
+          </div>
+        )}
+
+        {/* PUBLISH - New section to make admin changes live for everyone */}
+        {activeSection === 'publish' && (
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tighter">Publish Changes</h2>
+              <p className="text-[#94a3b8] mt-1">Admin edits are saved to <strong>your browser</strong> only (localStorage). Use this to make them live for all visitors.</p>
+            </div>
+
+            <div className="bg-[#0a0d18] border border-[#c5a46e] rounded-3xl p-8">
+              <div className="text-[#c5a46e] font-semibold mb-2">How to publish</div>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-[#cbd5e1] mb-6">
+                <li>Make your changes in the other tabs (they save automatically to your browser).</li>
+                <li>Click the button below to download <code>content.json</code>.</li>
+                <li>Save the file as <code>public/content.json</code> in the project (overwrite if exists).</li>
+                <li>Commit and push (or run the force redeploy command in terminal).</li>
+                <li>Done — the site will now serve these changes to everyone after the deploy.</li>
+              </ol>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={handlePublishDownload}
+                  className="btn-primary px-8 h-11 text-sm flex items-center gap-2"
+                >
+                  Download content.json
+                </button>
+                <button
+                  onClick={handleCopyJson}
+                  className="px-6 h-11 text-sm border border-[#1f2535] hover:bg-[#0a0d18] rounded-2xl"
+                >
+                  Copy JSON to clipboard
+                </button>
+                <button
+                  onClick={handleCopyDefaults}
+                  className="px-6 h-11 text-sm border border-[#1f2535] hover:bg-[#0a0d18] rounded-2xl"
+                >
+                  Copy as TS defaults (for lib/content.ts)
+                </button>
+              </div>
+
+              <div className="mt-6 text-xs text-[#64748b]">
+                After placing <code>public/content.json</code> and pushing, the site will load the published content for all visitors. 
+                Your localStorage (in this browser) will still let you continue editing on top of it.
+              </div>
+
+              <div className="mt-4">
+                <div className="text-xs text-[#94a3b8] mb-1">Current published content preview (what will be in content.json):</div>
+                <pre className="bg-black/40 p-4 rounded-xl text-xs overflow-auto max-h-64 border border-[#1f2535]">
+                  {JSON.stringify(content, null, 2)}
+                </pre>
+              </div>
+            </div>
           </div>
         )}
 

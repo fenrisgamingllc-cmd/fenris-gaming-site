@@ -36,5 +36,112 @@
       "isExternal": true,
       "subtitle": "Cards"
     }
+  ],
+  "events": [
+    {
+      "id": "evt-1",
+      "title": "Commander & Coffee (Magic)",
+      "isRecurring": true,
+      "dayOfWeek": 0,
+      "time": "10:00 AM",
+      "description": "Casual Magic Commander with coffee. New players welcome!"
+    },
+    {
+      "id": "evt-2",
+      "title": "Riftbound",
+      "isRecurring": true,
+      "dayOfWeek": 0,
+      "time": "12:00 PM",
+      "description": "Sunday Riftbound play and events. New players welcome."
+    },
+    {
+      "id": "evt-3",
+      "title": "One Piece TCG",
+      "isRecurring": true,
+      "dayOfWeek": 0,
+      "time": "5:00 PM",
+      "description": "One Piece TCG play and events."
+    },
+    {
+      "id": "evt-4",
+      "title": "Magic Commander",
+      "isRecurring": true,
+      "dayOfWeek": 1,
+      "time": "5:00 PM",
+      "description": "Commander night for Magic: The Gathering."
+    },
+    {
+      "id": "evt-5",
+      "title": "Tabletop Free Play",
+      "isRecurring": true,
+      "dayOfWeek": 2,
+      "time": "All Day",
+      "description": "Open play for all tabletop games. No formal event — just show up and play."
+    },
+    {
+      "id": "evt-6",
+      "title": "Hobby Night",
+      "isRecurring": true,
+      "dayOfWeek": 3,
+      "time": "6:00 PM",
+      "description": "Painting, building, and hobby time with good lighting and tables."
+    },
+    {
+      "id": "evt-8",
+      "title": "Gundam Card Game",
+      "isRecurring": true,
+      "dayOfWeek": 3,
+      "time": "6:30 PM",
+      "description": "Gundam Card Game events and play."
+    },
+    {
+      "id": "evt-9",
+      "title": "Warhammer Spearhead + Tabletop Free Play",
+      "isRecurring": true,
+      "dayOfWeek": 4,
+      "time": "All Day",
+      "description": "Warhammer Spearhead alongside open tabletop free play all day."
+    },
+    {
+      "id": "evt-10",
+      "title": "Warhammer",
+      "isRecurring": true,
+      "dayOfWeek": 5,
+      "time": "10:00 AM",
+      "description": "Warhammer games and events."
+    },
+    {
+      "id": "evt-11",
+      "title": "Friday Night Magic",
+      "isRecurring": true,
+      "dayOfWeek": 5,
+      "time": "6:00 PM",
+      "description": "Weekly Friday Night Magic — Standard or Commander. Prizing for top tables.",
+      "price": "$5 entry (tournaments)"
+    },
+    {
+      "id": "evt-12",
+      "title": "Magic",
+      "isRecurring": true,
+      "dayOfWeek": 6,
+      "time": "12:00 PM",
+      "description": "Magic: The Gathering play and events."
+    },
+    {
+      "id": "evt-13",
+      "title": "Pokémon",
+      "isRecurring": true,
+      "dayOfWeek": 6,
+      "time": "5:30 PM",
+      "description": "Pokémon TCG events and league play."
+    },
+    {
+      "id": "evt-14",
+      "title": "Tabletop Free Play",
+      "isRecurring": true,
+      "dayOfWeek": 6,
+      "time": "All Day",
+      "description": "Open play for board games, minis, card games, and RPGs."
+    }
   ]
 }

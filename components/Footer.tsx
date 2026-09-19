@@ -115,6 +115,9 @@ export default function Footer() {
             <a href="https://fenrisgaming.myshopify.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#9ca3af]">
               Shop on Shopify
             </a>
+            <Link href="/policies/privacy-policy" className="hover:text-[#9ca3af]">
+              Privacy Policy
+            </Link>
             <a href="/getting-started" className="hover:text-[#9ca3af]">
               Getting Started
             </a>

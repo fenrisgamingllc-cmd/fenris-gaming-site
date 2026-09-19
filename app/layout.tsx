@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { Toaster } from 'sonner';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+const GOOGLE_ADS_ID = 'AW-18461862581';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fenrisgamingllc.com'),
@@ -29,6 +32,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen flex flex-col bg-[#05070f] text-[#e2e8f0]">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_ID}');
+          `}
+        </Script>
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

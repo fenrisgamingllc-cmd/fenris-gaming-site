@@ -1,15 +1,18 @@
 import type { MetadataRoute } from 'next';
+import { getRequestSiteUrl } from '@/lib/site-url';
 
-const SITE_URL = 'https://fenrisgamingllc.com';
+export const dynamic = 'force-dynamic';
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const siteUrl = await getRequestSiteUrl();
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: '/admin',
     },
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }

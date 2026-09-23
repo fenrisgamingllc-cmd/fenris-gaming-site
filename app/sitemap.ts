@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
+import { getRequestSiteUrl } from '@/lib/site-url';
 
-const SITE_URL = 'https://fenrisgamingllc.com';
+export const dynamic = 'force-dynamic';
 
 const pages: Array<{
   path: string;
@@ -16,11 +17,12 @@ const pages: Array<{
   { path: '/policies/privacy-policy', changeFrequency: 'yearly', priority: 0.3 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const siteUrl = await getRequestSiteUrl();
   const lastModified = new Date();
 
   return pages.map(({ path, changeFrequency, priority }) => ({
-    url: path === '/' ? SITE_URL : `${SITE_URL}${path}`,
+    url: path === '/' ? siteUrl : `${siteUrl}${path}`,
     lastModified,
     changeFrequency,
     priority,

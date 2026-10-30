@@ -22,58 +22,37 @@ export default function Home() {
   // Dynamic site content from admin dashboard (localStorage)
   const { content: siteContent } = useSiteContent();
 
-  // Generate upcoming events from admin-managed data (preferred)
+  // Generate upcoming events from admin-managed data (preferred).
+  // Dates are handled as local calendar days (YYYY-MM-DD) to avoid UTC shifts.
+  const toLocalYMD = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const upcomingEventsFromAdmin = React.useMemo(() => {
     const now = new Date();
-    const twoWeeksFromNow = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+    const todayYMD = toLocalYMD(now);
+    const horizon = new Date(now);
+    horizon.setDate(now.getDate() + 14);
+    const horizonYMD = toLocalYMD(horizon);
 
-    const results: Array<{
-      id: string;
-      title: string;
-      date: string;
-      time: string;
-      description: string;
-      price?: string;
-      isRecurring?: boolean;
-    }> = [];
+    type Item = { id: string; title: string; date: string; time: string; description: string; price?: string; isRecurring?: boolean };
+    const special: Item[] = [];
+    const recurring: Item[] = [];
 
     siteContent.events.forEach((ev) => {
       if (ev.isRecurring && typeof ev.dayOfWeek === 'number') {
-        // Calculate next occurrence
-        const daysUntil = (ev.dayOfWeek - now.getDay() + 7) % 7 || 7;
+        const daysUntil = (ev.dayOfWeek - now.getDay() + 7) % 7; // 0 = today
         const nextDate = new Date(now);
         nextDate.setDate(now.getDate() + daysUntil);
-
-        if (nextDate <= twoWeeksFromNow) {
-          results.push({
-            id: ev.id,
-            title: ev.title,
-            date: nextDate.toISOString().split('T')[0],
-            time: ev.time,
-            description: ev.description,
-            price: ev.price,
-            isRecurring: true,
-          });
-        }
-      } else if (!ev.isRecurring && ev.date) {
-        const eventDate = new Date(ev.date);
-        if (eventDate >= now && eventDate <= twoWeeksFromNow) {
-          results.push({
-            id: ev.id,
-            title: ev.title,
-            date: ev.date,
-            time: ev.time,
-            description: ev.description,
-            price: ev.price,
-            isRecurring: false,
-          });
-        }
+        recurring.push({ id: ev.id, title: ev.title, date: toLocalYMD(nextDate), time: ev.time, description: ev.description, price: ev.price, isRecurring: true });
+      } else if (!ev.isRecurring && ev.date && ev.date >= todayYMD && ev.date <= horizonYMD) {
+        special.push({ id: ev.id, title: ev.title, date: ev.date, time: ev.time, description: ev.description, price: ev.price, isRecurring: false });
       }
     });
 
-    return results
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .slice(0, 4);
+    const byDate = (a: Item, b: Item) => a.date.localeCompare(b.date);
+    // Special one-off events (prereleases etc.) always get a slot first.
+    const picked = [...special.sort(byDate).slice(0, 4)];
+    picked.push(...recurring.sort(byDate).slice(0, 4 - picked.length));
+    return picked.sort(byDate);
   }, [siteContent.events]);
 
   // Dynamic gallery from admin dashboard (falls back to defaults in lib/content)
@@ -322,7 +301,7 @@ export default function Home() {
               >
                 <div className="mb-3">
                   <div className="text-xs uppercase tracking-[1px] text-[#9ca3af] font-medium">
-                    {new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                    {new Date(`${event.date}T12:00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   <h3 className="font-semibold text-lg leading-tight mt-0.5 group-hover:text-[#c5a46e] transition-colors pr-2">
                     {event.title}
@@ -330,9 +309,11 @@ export default function Home() {
                 </div>
 
                 <div className="mt-auto space-y-2 text-sm text-[#9ca3af]">
+                  {event.time && (
                   <div className="flex items-center gap-2">
                     <span>{event.time}</span>
                   </div>
+                  )}
                   <p className="line-clamp-2 text-xs pt-1 text-[#cbd5e1]">
                     {event.description}
                   </p>

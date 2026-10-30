@@ -200,6 +200,9 @@ const DEFAULT_CONTENT: SiteContent = {
     grandOpeningText: 'On Halloween 2025 we cut the ribbon at 11375 Robinwood Drive. Surrounded by family, friends, and the entire local gaming community, we officially opened the space we had dreamed of for over a decade. The hall was designed by gamers, for gamers — with room for large Warhammer tables, comfortable seating, and a true “third space” feel for players of 40k, Age of Sigmar, Horus Heresy, MTG, Pokémon, One Piece, Gundam Card Game, Bolt Action, and more.',
   },
   events: [
+    // One-off special events (source: Fenris Shopify ticket products)
+    { id: 'evt-trk-2026-11-06', title: "Star Trek Prerelease (Magic) — Friday", isRecurring: false, date: '2026-11-06', time: "6:30 PM", description: "Magic: The Gathering Star Trek prerelease. Tickets available in our online store." },
+    { id: 'evt-trk-2026-11-07', title: "Star Trek Prerelease (Magic) — Saturday", isRecurring: false, date: '2026-11-07', time: "12:00 PM", description: "Magic: The Gathering Star Trek prerelease. Tickets available in our online store." },
     // Sunday
     { id: 'evt-1', title: "Commander & Coffee (Magic)", isRecurring: true, dayOfWeek: 0, time: "10:00 AM", description: "Casual Magic Commander with coffee. New players welcome!" },
     { id: 'evt-2', title: "Riftbound", isRecurring: true, dayOfWeek: 0, time: "12:00 PM", description: "Sunday Riftbound play and events. New players welcome." },
@@ -214,7 +217,7 @@ const DEFAULT_CONTENT: SiteContent = {
     // Thursday
     { id: 'evt-9', title: "Warhammer Spearhead + Tabletop Free Play", isRecurring: true, dayOfWeek: 4, time: "All Day", description: "Warhammer Spearhead alongside open tabletop free play all day." },
     // Friday
-    { id: 'evt-10', title: "Warhammer", isRecurring: true, dayOfWeek: 5, time: "10:00 AM", description: "Warhammer games and events." },
+    { id: 'evt-10', title: "Warhammer", isRecurring: true, dayOfWeek: 5, time: "", description: "Warhammer games and events." },
     { id: 'evt-11', title: "Friday Night Magic", isRecurring: true, dayOfWeek: 5, time: "6:00 PM", description: "Weekly Friday Night Magic — Standard or Commander. Prizing for top tables.", price: "$5 entry (tournaments)" },
     // Saturday
     { id: 'evt-12', title: "Magic", isRecurring: true, dayOfWeek: 6, time: "12:00 PM", description: "Magic: The Gathering play and events." },

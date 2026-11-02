@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Baked into the bundle so the prerendered HTML and the first client render agree.
+  env: { NEXT_PUBLIC_BUILD_TIME: process.env.SIMULATE_NOW || new Date().toISOString() },
   async headers() {
     return [
       {

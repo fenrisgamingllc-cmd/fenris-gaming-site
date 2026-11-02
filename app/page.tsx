@@ -8,6 +8,9 @@ import EventCard from '@/components/EventCard';
 import EventModal from '@/components/EventModal';
 import type { GameEvent } from '@/lib/events';
 import { useSiteContent } from '@/lib/content';
+import { upcomingHomeEvents } from '@/lib/home-events';
+
+const BUILD_TIME = new Date(process.env.NEXT_PUBLIC_BUILD_TIME || Date.now());
 import { Calendar, MapPin, ArrowRight, Sword } from 'lucide-react';
 
 export default function Home() {
@@ -22,38 +25,19 @@ export default function Home() {
   // Dynamic site content from admin dashboard (localStorage)
   const { content: siteContent } = useSiteContent();
 
-  // Generate upcoming events from admin-managed data (preferred).
-  // Dates are handled as local calendar days (YYYY-MM-DD) to avoid UTC shifts.
-  const toLocalYMD = (d: Date) =>
-    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  const upcomingEventsFromAdmin = React.useMemo(() => {
-    const now = new Date();
-    const todayYMD = toLocalYMD(now);
-    const horizon = new Date(now);
-    horizon.setDate(now.getDate() + 14);
-    const horizonYMD = toLocalYMD(horizon);
-
-    type Item = { id: string; title: string; date: string; time: string; description: string; price?: string; isRecurring?: boolean };
-    const special: Item[] = [];
-    const recurring: Item[] = [];
-
-    siteContent.events.forEach((ev) => {
-      if (ev.isRecurring && typeof ev.dayOfWeek === 'number') {
-        const daysUntil = (ev.dayOfWeek - now.getDay() + 7) % 7; // 0 = today
-        const nextDate = new Date(now);
-        nextDate.setDate(now.getDate() + daysUntil);
-        recurring.push({ id: ev.id, title: ev.title, date: toLocalYMD(nextDate), time: ev.time, description: ev.description, price: ev.price, isRecurring: true });
-      } else if (!ev.isRecurring && ev.date && ev.date >= todayYMD && ev.date <= horizonYMD) {
-        special.push({ id: ev.id, title: ev.title, date: ev.date, time: ev.time, description: ev.description, price: ev.price, isRecurring: false });
-      }
-    });
-
-    const byDate = (a: Item, b: Item) => a.date.localeCompare(b.date);
-    // Special one-off events (prereleases etc.) always get a slot first.
-    const picked = [...special.sort(byDate).slice(0, 4)];
-    picked.push(...recurring.sort(byDate).slice(0, 4 - picked.length));
-    return picked.sort(byDate);
-  }, [siteContent.events]);
+  // Upcoming events are computed for "today" in ET. The prerendered HTML uses the
+  // build time; on mount (and hourly) we recompute with the visitor's clock so the
+  // block never shows past events even if the site hasn't been rebuilt.
+  const [now, setNow] = useState<Date | null>(null);
+  React.useEffect(() => {
+    setNow(new Date());
+    const t = setInterval(() => setNow(new Date()), 60 * 60 * 1000);
+    return () => clearInterval(t);
+  }, []);
+  const upcomingEventsFromAdmin = React.useMemo(
+    () => upcomingHomeEvents(siteContent.events, now ?? BUILD_TIME),
+    [siteContent.events, now]
+  );
 
   // Dynamic gallery from admin dashboard (falls back to defaults in lib/content)
   const communityPhotos = siteContent.homepageGallery;

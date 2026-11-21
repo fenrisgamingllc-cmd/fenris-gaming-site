@@ -9,6 +9,11 @@ const GOOGLE_ADS_ID = 'AW-18461862581';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fenrisgamingllc.com'),
+  alternates: {
+    // Relative `./` resolves against each page's path, so every route
+    // emits a self-referencing https://fenrisgamingllc.com/... canonical.
+    canonical: './',
+  },
   title: 'Fenris Gaming | Tabletop Gaming Hall in Hagerstown, MD',
   description: 'Your premier destination for Warhammer 40k, Age of Sigmar, Horus Heresy, Magic: The Gathering, Pokémon TCG, One Piece TCG, Gundam Card Game, Bolt Action, and more. A welcoming community gaming hall in Hagerstown, Maryland with events, open play, and great deals on new & used models and trading cards.',
   icons: {

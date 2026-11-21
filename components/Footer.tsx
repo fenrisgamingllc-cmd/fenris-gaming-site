@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react';
 import { useSiteContent } from '@/lib/content';
 
@@ -26,9 +27,14 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                <span className="text-[#0a0f1a] text-lg font-bold">F</span>
-              </div>
+              <Image
+                src="/images/fenris-logo.jpg"
+                alt="Fenris Gaming"
+                width={0}
+                height={0}
+                unoptimized
+                className="h-9 w-auto object-contain invert"
+              />
               <span className="font-bold text-lg tracking-tighter">FENRIS GAMING</span>
             </div>
             <p className="text-[#9ca3af] max-w-[220px]">

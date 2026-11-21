@@ -9,36 +9,34 @@ export default function ContactPage() {
   const { content: siteContent } = useSiteContent();
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+    const message = formData.message.trim();
 
-    // For production: Replace the Formspree endpoint below with your own (free at formspree.io)
-    // Example: https://formspree.io/f/YOUR_UNIQUE_ID
-    try {
-      const response = await fetch('https://formspree.io/f/PLACEHOLDER', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        toast.success('Message sent! We’ll get back to you within a day or two.');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-      } else {
-        // Fallback: open email client
-        window.location.href = `mailto:fenrisgamingllc@gmail.com?subject=Website Inquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`;
-        toast.info('Opening your email app...');
-      }
-    } catch {
-      // Offline / no network — graceful fallback
-      window.location.href = `mailto:fenrisgamingllc@gmail.com?subject=Website Inquiry&body=${encodeURIComponent(formData.message + '\n\nFrom: ' + formData.name + ' (' + formData.email + ')')}`;
-      toast.info('Opening email client as fallback.');
-    } finally {
-      setIsSubmitting(false);
+    if (!name || !email || !message) {
+      toast.error('Please add your name, email, and a message.');
+      return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+
+    // Same address already published in the footer, privacy policy, and store info.
+    const to = siteContent.storeInfo.email.trim() || 'fenrisgamingllc@gmail.com';
+    const body = [
+      message,
+      '',
+      `From: ${name}`,
+      `Email: ${email}`,
+      phone ? `Phone: ${phone}` : '',
+    ].filter(Boolean).join('\n');
+    window.location.href = `mailto:${to}?subject=${encodeURIComponent(`Website inquiry from ${name}`)}&body=${encodeURIComponent(body)}`;
+    toast.success('Your email app should open with this message. Send it there to reach us.');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -150,14 +148,13 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full h-12 rounded-2xl bg-[#c5a46e] text-[#0a0f1a] font-semibold disabled:opacity-60 active:scale-[0.985] transition-all"
+                className="w-full h-12 rounded-2xl bg-[#c5a46e] text-[#0a0f1a] font-semibold active:scale-[0.985] transition-all"
               >
-                {isSubmitting ? 'Sending…' : 'Send Message'}
+                Email us
               </button>
 
               <p className="text-center text-[11px] text-[#6b7280]">
-                This form uses Formspree. You can also reach us instantly on Discord.
+                This opens your email app. Nothing is sent until you send that email. Discord is fastest for event signups.
               </p>
             </form>
           </div>

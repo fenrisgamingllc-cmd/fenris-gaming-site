@@ -29,17 +29,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-[#05070f]/95 backdrop-blur-xl border-b border-[#1f2535]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Premium Logo — Replace /public/logo.svg with your real logo file */}
           <Link href="/" className="flex items-center gap-3 group flex-shrink-0" onClick={closeMenu}>
-            {/* 
-              REAL FENRIS LOGO
-              Replace public/logo.png with your actual logo from the original site / Shopify.
-              Transparent PNG recommended.
-            */}
-            {/* 
-              Replace /public/logo.png (preferred) or /public/logo.svg 
-              with your actual Fenris Gaming logo from Shopify or design files.
-            */}
             <Image
               src="/images/fenris-logo.jpg"
               alt="Fenris Gaming Hall"

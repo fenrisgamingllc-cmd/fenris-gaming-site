@@ -1,17 +1,13 @@
 import type { MetadataRoute } from 'next';
-import { getRequestSiteUrl } from '@/lib/site-url';
+import { CANONICAL_ORIGIN } from '@/lib/legacy-redirects';
 
-export const dynamic = 'force-dynamic';
-
-export default async function robots(): Promise<MetadataRoute.Robots> {
-  const siteUrl = await getRequestSiteUrl();
-
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
-    host: siteUrl,
+    sitemap: `${CANONICAL_ORIGIN}/sitemap.xml`,
+    host: CANONICAL_ORIGIN,
   };
 }

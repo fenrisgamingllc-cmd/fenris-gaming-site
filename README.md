@@ -11,7 +11,7 @@ Built with Next.js 15, TypeScript, Tailwind, and love for the local tabletop sce
 - Full Events page with list + calendar views + category filters
 - About the store and the four owners
 - Community story / “third space” philosophy
-- Contact page with working form (Formspree) + Google Maps embed + hours
+- Contact page with a mailto form + Google Maps embed + hours
 - Prominent links to Shopify store + TCGplayer (update the TCGplayer URL!)
 - Mobile-first responsive nav
 - Event detail modals with one-click Discord RSVP
@@ -45,22 +45,11 @@ Used in:
 - `components/Navbar.tsx` (desktop + mobile)
 - `app/page.tsx` (hero CTA)
 
-### 2. Contact Form (Formspree)
-The contact form at `/contact` uses a placeholder Formspree endpoint.
+### 2. Contact Form
+The contact form at `/contact` validates the fields and opens a `mailto:` to the store email (`fenrisgamingllc@gmail.com`). It does not post to a form backend. A hosted inbox (Formspree or similar) needs a free account and a form id; don't commit that id as a secret.
 
-1. Go to https://formspree.io
-2. Create a free form (takes 30 seconds)
-3. Copy your endpoint (looks like `https://formspree.io/f/abc12345`)
-4. Replace `https://formspree.io/f/PLACEHOLDER` in `app/contact/page.tsx`
-
-### 3. Real Photos & Logo
-- Replace placeholder hero / community images with real photos from the grand opening and interior.
-- Add your actual logo (SVG preferred) to `/public/logo.svg` and update Navbar + Footer.
-- Create a proper `favicon.ico` and `/public/og-image.jpg` for social sharing.
-
-Good free stock sources while you shoot your own:
-- Unsplash “tabletop gaming”, “miniature painting”, “warhammer”
-- Your own phone photos from events work great
+### 3. Photos & Logo
+Navbar and footer use the real Fenris wolf mark at `public/images/fenris-logo.jpg` (the same artwork as the Shopify theme logo). Favicons are `app/icon.png` and `app/apple-icon.png`. Social sharing uses `public/og-image.jpg`, the store's own logo card. `public/logo.svg` is an unused hand-drawn sketch and is not shown on the site.
 
 ### 4. Hours (if they change)
 Update the hours arrays in:

@@ -1,7 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getRequestSiteUrl } from '@/lib/site-url';
-
-export const dynamic = 'force-dynamic';
+import { CANONICAL_ORIGIN } from '@/lib/legacy-redirects';
 
 const pages: Array<{
   path: string;
@@ -17,12 +15,11 @@ const pages: Array<{
   { path: '/policies/privacy-policy', changeFrequency: 'yearly', priority: 0.3 },
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = await getRequestSiteUrl();
+export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   return pages.map(({ path, changeFrequency, priority }) => ({
-    url: path === '/' ? siteUrl : `${siteUrl}${path}`,
+    url: path === '/' ? CANONICAL_ORIGIN : `${CANONICAL_ORIGIN}${path}`,
     lastModified,
     changeFrequency,
     priority,

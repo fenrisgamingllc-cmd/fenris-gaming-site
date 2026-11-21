@@ -41,6 +41,17 @@ const STORE_ROOTS = new Set([
 /** Marketing page that lives on this site and must not be sent to Shopify. */
 const LOCAL_POLICY_PATH = '/policies/privacy-policy';
 
+/**
+ * Short paths that are not real routes. Hours are the weekly table on
+ * /contact. Terms was confirmed 200 on the Shopify store.
+ */
+const SHORT_REDIRECTS: Record<string, string> = {
+  '/hours': `${CANONICAL_ORIGIN}/contact`,
+  '/privacy': `${CANONICAL_ORIGIN}/policies/privacy-policy`,
+  '/terms': `${STORE_ORIGIN}/policies/terms-of-service`,
+  '/shop': `${STORE_ORIGIN}/`,
+};
+
 export function hostnameFromHostHeader(value: string | null | undefined): string | null {
   if (!value) return null;
   const first = value.split(',')[0]?.trim().toLowerCase();
@@ -89,6 +100,9 @@ export function redirectDestination(
   pathname: string,
   search = '',
 ): string | null {
+  const short = SHORT_REDIRECTS[normalizedPath(pathname)];
+  if (short) return `${short}${search}`;
+
   const host = hostnameFromHostHeader(hostHeader);
   if (host && ALIAS_HOSTS.has(host)) {
     return `${CANONICAL_ORIGIN}${pathname}${search}`;
